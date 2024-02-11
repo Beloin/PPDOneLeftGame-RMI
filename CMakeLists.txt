@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.24)
-project(test_qt5)
+project(one_left)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_AUTOMOC ON)
@@ -13,11 +13,12 @@ find_package(Qt5 COMPONENTS
         Widgets
         REQUIRED)
 
-add_executable(test_qt5 main.cpp ApplicationMain.cpp ApplicationMain.h)
-target_link_libraries(test_qt5
+add_executable(one_left main.cpp ApplicationMain.cpp ApplicationMain.h)
+target_link_libraries(one_left
         Qt5::Core
         Qt5::Gui
         Qt5::Widgets
 )
 
 add_subdirectory(ui)
+add_subdirectory(network)

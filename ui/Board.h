@@ -5,11 +5,14 @@
 #ifndef TEST_QT5_BOARD_H
 #define TEST_QT5_BOARD_H
 
-//typedef matrix
+#include <vector>
+#include "Cell.h"
+
+template<typename T>
+using Matrix = std::vector<std::vector<T>>;
 
 class Board {
-
-
+    Matrix<Cell> board;
 
 };
 
