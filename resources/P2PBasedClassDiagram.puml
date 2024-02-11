@@ -1,0 +1,55 @@
+@startuml ClassWork
+'https://plantuml.com/class-diagram
+
+class Gamer {
+    + String id
+    - int32 ip
+
+    + Board board
+    + Gamer other
+}
+
+class Board {
+    int[][] board
+}
+
+Gamer *-- "1" Board
+Gamer *-- "1" Gamer
+
+
+class RawCommand {
+    + Command command
+    - raw_data
+
+    string GetText()
+}
+
+class GameCommand {
+    int from;
+    int to;
+}
+
+class ChatCommand {
+    string text;
+}
+
+class OptionCommand {
+    Option option
+}
+
+RawCommand <|-- GameCommand
+RawCommand <|-- ChatCommand
+RawCommand <|-- OptionCommand
+
+enum Command {
+    CHAT
+    GAME
+    OPTION
+}
+
+enum Option {
+    FLEE
+    EXPLODE
+}
+
+@enduml
