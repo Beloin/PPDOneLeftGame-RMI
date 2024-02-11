@@ -9,8 +9,14 @@
 class Cell {
 
 private:
-    bool is_enabled{false};
+    bool _isActive{false};
 
+public:
+    [[nodiscard]] bool isActive() const;
+
+    bool toggle();
+
+    void setActivation(bool v);
 };
 
 

@@ -8,7 +8,7 @@
 
 #include <QMainWindow>
 
-class ApplicationMain : public QMainWindow{
+class ApplicationMain : public QMainWindow {
 
 public:
     explicit ApplicationMain(QWidget *parent = Q_NULLPTR);

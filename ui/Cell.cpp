@@ -3,3 +3,15 @@
 //
 
 #include "Cell.h"
+
+bool Cell::isActive() const {
+    return _isActive;
+}
+
+bool Cell::toggle() {
+    return _isActive = !_isActive;
+}
+
+void Cell::setActivation(bool v) {
+    _isActive = v;
+}
