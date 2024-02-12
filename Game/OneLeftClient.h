@@ -23,6 +23,7 @@ public:
 
     void sendMessage(const std::string msg);
 
+    void RequestGame(std::string roomName);
 
 };
 
