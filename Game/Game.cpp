@@ -14,18 +14,18 @@ void Game::setGamer(GameClient gameClient) {
     if (isClosed()) return;
 
     if (hasGamer02) {
-        gamer01 = gameClient;
+        gamer01 = std::move(gameClient);
         hasGamer01 = true;
         return;
     }
 
-    gamer02 = gameClient;
+    gamer02 = std::move(gameClient);
     hasGamer02 = true;
 }
 
 void Game::start() {
-    std::thread gamer01Thread{gamer01};
-    std::thread gamer02Thread{gamer02};
+    std::thread gamer01Thread{gamer01, gamer02};
+    std::thread gamer02Thread{gamer02, gamer01};
 
 //    gamer01Thread.join();
 //    gamer02Thread.join();

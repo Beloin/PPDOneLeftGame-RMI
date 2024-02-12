@@ -3,3 +3,8 @@
 //
 
 #include "OneLeftClient.h"
+
+const Board &OneLeftClient::board() {
+    return _board;
+}
+

@@ -14,10 +14,12 @@ class GameClient {
 public:
     int id;
     int fd;
+    std::string clientAddr;
 
     GameClient(int id, int fd);
+    GameClient(int id, int fd, std::string clientAddr);
 
-    void operator()(const GameClient &other);
+    void operator()(const GameClient &other) const;
 
 };
 

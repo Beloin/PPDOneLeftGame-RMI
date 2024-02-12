@@ -72,7 +72,8 @@ int Server::Serve(const std::string &port) {
         exit(1);
     }
 
-    printf("serve (%s): waiting for connections...", port.c_str());
+//    std::cout << "serve (" << port << "): waiting for connections..." << std::endl;
+    printf("serve (%s): waiting for connections...\n", port.c_str());
 
     server_on = true;
     serverfd = server_fd;
@@ -90,7 +91,7 @@ int Server::Serve(const std::string &port) {
         }
 
         inet_ntop(their_addr.ss_family, Utils::get_in_addr((struct sockaddr *) &their_addr), s, sizeof s);
-        printf("serve: got connection from %s with fd %d", s, new_fd);
+        printf("serve: got connection from %s with fd %d\n", s, new_fd);
 
         handle_socket(new_fd, s);
     }
@@ -99,10 +100,13 @@ int Server::Serve(const std::string &port) {
     return 0;
 }
 
-Server::Server() : should_run(true), server_on(false) {
+Server::Server() : should_run(true), server_on(false), isClosed(false) {
 }
 
 Network::Server::~Server() {
+    if (isClosed) return;
+
+    isClosed = true;
     server_on = false;
     should_run = false;
 
@@ -111,4 +115,14 @@ Network::Server::~Server() {
 
 bool Network::Server::IsRunning() const {
     return server_on;
+}
+
+void Network::Server::dispose() {
+    if (isClosed) return;
+
+    isClosed = true;
+    server_on = false;
+    should_run = false;
+
+    close(serverfd);
 }

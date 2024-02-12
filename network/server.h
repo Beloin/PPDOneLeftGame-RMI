@@ -23,10 +23,13 @@ namespace Network {
 
         virtual void handle_socket(int client_fd, std::string client_addr) = 0;
 
+        void dispose();
+
     protected:
         bool should_run;
         bool server_on;
         int serverfd{};
+        bool isClosed;
 
     };
 

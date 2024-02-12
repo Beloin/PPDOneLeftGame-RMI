@@ -25,12 +25,12 @@ void OneLeftServer::handle_socket(int client_fd, std::string client_addr) {
 
     if (iterator != games.end()) {
         if (iterator->isClosed()) {
-            fprintf(stderr, "Error with Game: IS_FULL");
+            fprintf(stderr, "Error with Game: IS_FULL"); // SEND BACK A RESPONSE
             close(client_fd);
             return;
         }
 
-        GameClient g{currentId++, client_fd};
+        GameClient g{currentId++, client_fd, client_addr};
         iterator->setGamer(std::move(g));
 
         if (iterator->isClosed()) {
@@ -40,7 +40,7 @@ void OneLeftServer::handle_socket(int client_fd, std::string client_addr) {
         return;
     }
 
-    GameClient g{currentId++, client_fd};
+    GameClient g{currentId++, client_fd, client_addr};
     Game newGame{gameName};
     newGame.setGamer(g);
     games.push_back(std::move(newGame));
