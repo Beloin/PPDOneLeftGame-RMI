@@ -7,8 +7,11 @@
 
 
 #include "client.h"
+#include "Board.h"
 
 class OneLeftClient : public Network::Client {
+
+    Board board;
 
 
 };

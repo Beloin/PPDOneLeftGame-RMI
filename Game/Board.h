@@ -8,11 +8,17 @@
 #include <vector>
 #include "Cell.h"
 
-template<typename T>
+template<class T>
 using Matrix = std::vector<std::vector<T>>;
 
 class Board {
     Matrix<Cell> board;
+
+public:
+
+    Board(int size);
+
+    Cell &at(int i, int j);
 
 };
 

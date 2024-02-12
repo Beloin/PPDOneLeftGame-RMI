@@ -3,16 +3,16 @@
 
 skinparam sequenceMessageAlign center
 
-Connection -> Validator : Sends Raw Data
+Connection -> Gamer : Sends Raw Data
 
-Validator -> Board
+Gamer -> Board : Send Command
 
 Board -> UI : Call UI to Update { Game, Lose, Victory, Withdrawal }
 
 UI -> Board : User Input
 
 alt#Gold #LightBlue Valid Response
-    Validator -> Connection : Encapsulate User input and sends raw to Connection
+    Gamer -> Connection : Encapsulate User input and sends raw to Connection
 else User Invalid Response
     Board -> UI : Please Repeat
 end

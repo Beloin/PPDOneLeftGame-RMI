@@ -17,6 +17,8 @@ public:
     bool toggle();
 
     void setActivation(bool v);
+
+    Cell() : _isActive(false) {}
 };
 
 
