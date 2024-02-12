@@ -2,6 +2,8 @@
 #include <QPushButton>
 #include <QMainWindow>
 #include "ApplicationMain.h"
+#include "Game/Game.h"
+#include "Game/OneLeftClient.h"
 
 
 int main(int argc, char *argv[]) {

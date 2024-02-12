@@ -1,4 +1,6 @@
 add_library(
-        network STATIC
-        server.h server.cpp
-        OneLeftServer.cpp OneLeftServer.h)
+        network_lib STATIC
+        server.cpp server.h
+        client.cpp client.h
+        socket_utils.cpp socket_utils.h
+)

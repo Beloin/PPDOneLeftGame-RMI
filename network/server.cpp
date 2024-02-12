@@ -5,15 +5,12 @@
 #include <cstdlib>
 #include <unistd.h>
 #include <cstring>
-#include <utility>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <netdb.h>
 #include <arpa/inet.h>
-#include <list>
 #include <iostream>
 
-#include "spdlog/spdlog.h"
 
 #include "server.h"
 #include "socket_utils.h"
@@ -66,7 +63,7 @@ int Server::Serve(const std::string &port) {
 
     freeaddrinfo(servinfo);
     if (p == nullptr) {
-        spdlog::error("serve: failed to bind");
+        perror("serve: failed to bind");
         exit(1);
     }
 
@@ -75,7 +72,7 @@ int Server::Serve(const std::string &port) {
         exit(1);
     }
 
-    spdlog::info("serve ({}): waiting for connections...", port);
+    printf("serve (%s): waiting for connections...", port.c_str());
 
     server_on = true;
     serverfd = server_fd;
@@ -93,7 +90,7 @@ int Server::Serve(const std::string &port) {
         }
 
         inet_ntop(their_addr.ss_family, Utils::get_in_addr((struct sockaddr *) &their_addr), s, sizeof s);
-        spdlog::info("serve: got connection from {} with fd {}", s, new_fd);
+        printf("serve: got connection from %s with fd %d", s, new_fd);
 
         handle_socket(new_fd, s);
     }

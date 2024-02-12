@@ -13,12 +13,14 @@ find_package(Qt5 COMPONENTS
         Widgets
         REQUIRED)
 
+add_subdirectory(ui)
+add_subdirectory(Game)
+add_subdirectory(network)
+
 add_executable(one_left main.cpp ApplicationMain.cpp ApplicationMain.h)
 target_link_libraries(one_left
         Qt5::Core
         Qt5::Gui
         Qt5::Widgets
+        ui game_lib network_lib
 )
-
-add_subdirectory(ui)
-add_subdirectory(network)
