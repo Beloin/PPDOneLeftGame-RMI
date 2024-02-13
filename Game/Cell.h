@@ -9,16 +9,21 @@
 class Cell {
 
 private:
-    bool _isActive{false};
+    bool active{false};
+    bool valid{true};
 
 public:
     [[nodiscard]] bool isActive() const;
+
+    [[nodiscard]] bool isValid() const;
 
     bool toggle();
 
     void setActivation(bool v);
 
-    Cell() : _isActive(false) {}
+    Cell() : valid(true) {}
+    explicit Cell(bool valid) : valid(valid) {}
+
 };
 
 

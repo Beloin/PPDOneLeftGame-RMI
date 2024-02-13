@@ -12,7 +12,8 @@
 
 class OneLeftClient : public Network::Client {
 private:
-    Board _board{BOARD_SIZE};
+//    Board _board{BOARD_SIZE};
+    Board _board{};
 
 public:
     const Board &board();

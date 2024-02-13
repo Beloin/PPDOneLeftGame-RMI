@@ -5,13 +5,17 @@
 #include "Cell.h"
 
 bool Cell::isActive() const {
-    return _isActive;
+    return active;
 }
 
 bool Cell::toggle() {
-    return _isActive = !_isActive;
+    return active = !active;
 }
 
 void Cell::setActivation(bool v) {
-    _isActive = v;
+    active = v;
+}
+
+bool Cell::isValid() const {
+    return valid;
 }

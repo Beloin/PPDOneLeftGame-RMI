@@ -16,10 +16,12 @@ class Board {
 
 public:
 
-    Board(int size);
+//    explicit Board(int size);
+    explicit Board();
 
     Cell &at(int i, int j);
 
+    int size();
 };
 
 

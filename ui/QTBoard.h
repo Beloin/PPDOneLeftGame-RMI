@@ -6,9 +6,19 @@
 #define ONE_LEFT_QTBOARD_H
 
 #include <QGraphicsView>
+#include "QTCell.h"
+#include "Board.h"
 
 class QTBoard : public QGraphicsView {
 
+private:
+    Board board{};
+
+public:
+    QTBoard(QGraphicsScene *scene, QWidget *parent);
+
+protected:
+    void paintEvent(QPaintEvent *event) override;
 };
 
 
