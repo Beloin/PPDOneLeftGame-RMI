@@ -8,7 +8,15 @@
 #include "ApplicationMain.h"
 #include "ui/QTBoard.h"
 
+QTBoard *test;
+
 void handle() {
+    const QList<QGraphicsItem *> &list = test->items();
+    for (const auto &item: list) {
+        auto d = (QTCell *) item;
+        d->cell.toggle();
+        d->update();
+    }
     std::cout << "Button Pressed" << std::endl;
 }
 
@@ -20,12 +28,13 @@ ApplicationMain::ApplicationMain(QWidget *parent) : QMainWindow(parent) {
     auto scene = new QGraphicsScene{this};
     auto board = new QTBoard{scene, this};
 
+    test = board;
+
     auto button = new QPushButton("Start");
     connect(button, &QPushButton::released, this, handle);
 
     auto button2 = new QPushButton("Flee");
     connect(button2, &QPushButton::released, this, handle);
-
     auto mainWidget = new QWidget();
 
     auto hbox = new QHBoxLayout();

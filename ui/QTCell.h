@@ -20,8 +20,9 @@ public:
 
     [[nodiscard]] QRectF boundingRect() const override;
 
-private:
+//private:
     Cell &cell;
+
 };
 
 

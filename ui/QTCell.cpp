@@ -10,12 +10,12 @@ QTCell::QTCell(QGraphicsItem *parent, Cell &cell) : QGraphicsItem(parent), cell(
 }
 
 void QTCell::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
-    painter->setBrush(Qt::red);
+    painter->setBrush(cell.isActive() ? Qt::black : Qt::red);
     painter->drawEllipse(boundingRect());
 }
 
 QRectF QTCell::boundingRect() const {
-    return {-10, -10, 20, 20};
+    return {-50, -50, 50, 50};
 }
 
 QTCell::QTCell(Cell &cell) : cell(cell) {
