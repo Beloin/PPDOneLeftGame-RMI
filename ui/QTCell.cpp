@@ -6,18 +6,21 @@
 #include "QTCell.h"
 #include<QPainter>
 
-QTCell::QTCell(QGraphicsItem *parent, Cell &cell) : QGraphicsItem(parent), cell(cell) {
-}
-
 void QTCell::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
-    painter->setBrush(cell.isActive() ? Qt::black : Qt::red);
-    painter->drawEllipse(boundingRect());
+    Qt::GlobalColor color{Qt::white};
+    if (cell.isValid()) {
+        color = cell.isActive() ? Qt::red : Qt::black;
+    }
+
+    painter->setBrush(cell.isValid() ? color : Qt::white);
+    painter->drawRect(boundingRect());
 }
 
 QRectF QTCell::boundingRect() const {
-    return {-50, -50, 50, 50};
+    qreal x = pos.x() * -50;
+    qreal y = pos.y() * -50;
+    return {x, y, 50, 50};
 }
 
-QTCell::QTCell(Cell &cell) : cell(cell) {
-
+QTCell::QTCell(Cell &cell, QPoint pos) : cell(cell), pos(pos) {
 }

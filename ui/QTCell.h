@@ -13,15 +13,17 @@
 class QTCell : public QGraphicsItem {
 
 public:
-    QTCell(QGraphicsItem *parent, Cell &cell);
-    explicit QTCell(Cell &cell);
+    QTCell(Cell &cell, QPoint pos);
 
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
 
     [[nodiscard]] QRectF boundingRect() const override;
 
-//private:
     Cell &cell;
+
+private:
+    QPoint pos{-1, -1};
+
 
 };
 

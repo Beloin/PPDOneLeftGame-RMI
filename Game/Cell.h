@@ -9,7 +9,10 @@
 class Cell {
 
 private:
+    // Is active at the moment
     bool active{false};
+
+    // Is a valid position
     bool valid{true};
 
 public:
@@ -22,6 +25,7 @@ public:
     void setActivation(bool v);
 
     Cell() : valid(true) {}
+
     explicit Cell(bool valid) : valid(valid) {}
 
 };

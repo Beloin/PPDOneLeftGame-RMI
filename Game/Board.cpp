@@ -33,3 +33,22 @@ Board::Board() : board(7) {
 int Board::size() {
     return board.size();
 }
+
+void Board::setup() {
+
+    for (int i = 0; i < 7; ++i) {
+        for (int j = 0; j < 7; j++) {
+            if (i == 3 && j == 3) {
+                board[3][3].setActivation(false);
+                continue;
+            }
+
+            board[i][j].setActivation(true);
+
+        }
+    }
+}
+
+void Board::reset() {
+    setup();
+}

@@ -22,6 +22,10 @@ public:
     Cell &at(int i, int j);
 
     int size();
+
+    void reset();
+
+    void setup();
 };
 
 

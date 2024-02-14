@@ -8,7 +8,7 @@
 QTBoard::QTBoard(QGraphicsScene *scene, QWidget *parent) : QGraphicsView(scene, parent) {
     for (int i = 0; i < board.size(); i++) {
         for (int j = 0; j < board.size(); j++) {
-            auto *cell = new QTCell{board.at(i, j)}; // TODO: Add position? No, we will use position in who we call
+            auto *cell = new QTCell{board.at(i, j), QPoint{i, j}};
             this->scene()->addItem(cell);
         }
     }
@@ -17,6 +17,8 @@ QTBoard::QTBoard(QGraphicsScene *scene, QWidget *parent) : QGraphicsView(scene, 
 //    for (const auto &item: list) {
 //        item->update(); // Updates drawable QTCell
 //    }
+
+    board.setup();
 }
 
 void QTBoard::paintEvent(QPaintEvent *event) {
