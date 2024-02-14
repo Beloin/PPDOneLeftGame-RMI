@@ -7,20 +7,19 @@
 #include "Game/OneLeftServer.h"
 
 
-void serve();
-
 int main(int argc, char *argv[]) {
+//    if (std::string(argv[1]) == "server")
+    if (argc > 1 && strcmp(argv[1], "server") == 0) {
+        OneLeftServer server;
+        server.serve("6969");
+
+        exit(0);
+    }
+
     QApplication a(argc, argv);
 
     ApplicationMain applicationMain;
     applicationMain.show();
 
-    std::thread serverThread(serve);
-
     return QApplication::exec();
-}
-
-void serve() {
-    OneLeftServer server;
-    server.Serve("6969");
 }

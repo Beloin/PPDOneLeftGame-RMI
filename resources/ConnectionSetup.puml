@@ -1,0 +1,14 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+
+User -> Server : Connect
+User -> Server : Query Game with "GameName"
+
+alt Game is Full
+    User <- Server : Error: Game is Full
+else GameStart
+    Server -> User : StartCommand
+end
+
+@enduml

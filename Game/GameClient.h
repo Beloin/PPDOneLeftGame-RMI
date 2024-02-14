@@ -7,6 +7,7 @@
 
 
 #include <thread>
+#include <ostream>
 #include "Board.h"
 
 class GameClient {
@@ -20,6 +21,9 @@ public:
     GameClient(int id, int fd, std::string clientAddr);
 
     void operator()(const GameClient &other) const;
+
+    friend std::ostream &operator<<(std::ostream &os, const GameClient &client);
+    friend std::ostream &operator<<(std::ostream &os, const GameClient *client);
 
 };
 

@@ -9,11 +9,14 @@
 #include "socket_utils.h"
 
 void OneLeftServer::handle_socket(int client_fd, std::string client_addr) {
-    std::cout << "Started " << client_addr << std::endl;
-
     char buffer[255];
 
-    Utils::rbytes(client_fd, (unsigned char *) buffer, 255);
+    ssize_t status = Utils::rbytes(client_fd, (unsigned char *) buffer, 255); // Read Game Name
+    if (status <= 0) {
+        std::cout << "Could not receive game name. closing connection..." << std::endl;
+        return;
+    }
+
     const std::basic_string<char> &gameName = std::string(buffer);
 
     const std::vector<Game>::iterator &iterator = std::find_if(

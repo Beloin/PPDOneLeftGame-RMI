@@ -10,7 +10,7 @@
 #include "Board.h"
 #include "config.h"
 
-class OneLeftClient : public Network::Client {
+class OneLeftClient : protected Network::Client {
 private:
 //    Board _board{BOARD_SIZE};
     Board _board{};
@@ -25,6 +25,8 @@ public:
     void sendMessage(const std::string msg);
 
     void RequestGame(std::string roomName);
+
+    int connectToServer(std::string const &host, std::string const &port);
 
 };
 

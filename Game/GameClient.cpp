@@ -4,39 +4,53 @@
 
 #include <iostream>
 #include <utility>
+#include <csignal>
 #include "GameClient.h"
 #include "socket_utils.h"
 #include "Messages/Command.h"
 
 void GameClient::operator()(const GameClient &other) const {
-    char buffer[65536]; // High to receive TEXT
+    // TODO: What todo when client close connections?
+    // TODO: When a client after start-command, something goes wrong
 
+    std::cout << "Started Gateway for Client " << *this << std::endl;
+    char buffer[65536]; // High to receive TEXT
     ssize_t status = 0;
-    while (status >= 0) {
-        status = Utils::rbytes(fd, (unsigned char *) buffer, 1); // Add error validation
-        if (status < 0) break;
+
+    buffer[0] = 1;
+    status = Utils::sbytes(fd, (unsigned char *) buffer, 1);
+
+    std::cout << "Sent start command for Client " << this << std::endl;
+
+    while (status > 0) {
+        // Command
+        status = Utils::rbytes(fd, (unsigned char *) buffer, 1);
+        if (status <= 0) break;
         status = Utils::sbytes(other.fd, (unsigned char *) buffer, 1);
-        if (status < 0) break;
+        if (status <= 0) break;
 
         int len;
         switch (buffer[0]) {
             case CommandType::GAME:
+                std::cout << "Proxying GAME COMMAND for Client " << this << std::endl;
                 status = Utils::rbytes(fd, (unsigned char *) buffer, 2);
-                if (status < 0) break;
+                if (status <= 0) break;
                 status = Utils::sbytes(other.fd, (unsigned char *) buffer, 2);
                 break;
             case CommandType::CHAT:
+                std::cout << "Proxying CHAT COMMAND for Client {" << id << "}" << std::endl;
                 status = Utils::rbytes(fd, (unsigned char *) buffer, 2);
-                if (status < 0) break;
+                if (status <= 0) break;
                 len = (((int) buffer[0]) << 8) | buffer[1];
                 status = Utils::rbytes(fd, (unsigned char *) buffer, len);
-                if (status < 0) break;
+                if (status <= 0) break;
                 status = Utils::sbytes(other.fd, (unsigned char *) buffer, len);
                 break;
             case CommandType::OPTION:
+                std::cout << "Proxying OPTION COMMAND for Client {" << id << "}" << std::endl;
                 status = Utils::rbytes(fd, (unsigned char *) buffer, 1);
-                if (status < 0) break;
-                // IF is giveup, remove from here
+                if (status <= 0) break;
+                // IF is FLEE, remove from here
                 // Check for winners... Where?
                 status = Utils::rbytes(fd, (unsigned char *) buffer, 1);
                 break;
@@ -45,11 +59,21 @@ void GameClient::operator()(const GameClient &other) const {
         }
     }
 
-    std::cout << "Connection Closed with " << clientAddr << std::endl;
+    std::cout << "Connection Closed with Client " << this << std::endl;
+//    close(other.fd);
 }
 
 GameClient::GameClient(int id, int fd) : id(id), fd(fd) {}
 
 GameClient::GameClient(int id, int fd, std::string clientAddr) : id(id), fd(fd), clientAddr(std::move(clientAddr)) {
 
+}
+
+std::ostream &operator<<(std::ostream &os, const GameClient &client) {
+    os << "{ id: " << client.id << ", fd: " << client.fd << ", clientAddr: " << client.clientAddr << " }";
+    return os;
+}
+
+std::ostream &operator<<(std::ostream &os, const GameClient *client) {
+    return os << "{ id: " << client->id << ", fd: " << client->fd << " }";
 }

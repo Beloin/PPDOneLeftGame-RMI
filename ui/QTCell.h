@@ -21,9 +21,11 @@ public:
 
     Cell &cell;
 
+protected:
+    void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
+
 private:
     QPoint pos{-1, -1};
-
 
 };
 

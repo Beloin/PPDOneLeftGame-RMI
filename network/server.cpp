@@ -21,7 +21,7 @@ using Network::Server;
 
 using namespace Network;
 
-int Server::Serve(const std::string &port) {
+int Server::serve(const std::string &port) {
     int server_fd;
     struct addrinfo hints{}, *servinfo, *p;
 
