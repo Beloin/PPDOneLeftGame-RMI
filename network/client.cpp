@@ -59,7 +59,7 @@ int Client::ConnectToServer(std::string const &host, std::string const &port) {
     }
 
     inet_ntop(p->ai_family, Utils::get_in_addr((struct sockaddr *) p->ai_addr), s, sizeof s);
-    printf("client: connecting to %s with fd %d", s, server_fd);
+    printf("client: connecting to %s with fd %d\n", s, server_fd);
     server_addr = s;
     freeaddrinfo(servinfo);
 

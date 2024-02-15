@@ -13,6 +13,7 @@ const Board &OneLeftClient::board() {
 }
 
 int OneLeftClient::requestGame(const std::string &game, const std::string &host, const std::string &port) {
+    std::cout << "Requesting game..." << std::endl;
     if (game.length() > 255) return ClientError::BIG_GAME_NAME;
 
     ssize_t status = ConnectTo(host, port);
@@ -42,6 +43,8 @@ int OneLeftClient::requestGame(const std::string &game, const std::string &host,
 
     _board.setup();
     isConnected = true;
+
+    return 0;
 }
 
 void OneLeftClient::listen() {
@@ -157,5 +160,7 @@ int OneLeftClient::flee() {
 
     return 0;
 }
+
+OneLeftClient::OneLeftClient() {}
 
 

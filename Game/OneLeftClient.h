@@ -28,13 +28,13 @@ private:
 
 
     CommandCallable gameCallable{nullptr};
-    GameCommand gameCommand;
+    GameCommand gameCommand{-1, -1};
 
     CommandCallable chatCallable{nullptr};
-    ChatCommand chatCommand;
+    ChatCommand chatCommand{""};
 
     CommandCallable optionCallable{nullptr};
-    OptionCommand optionCommand;
+    OptionCommand optionCommand{Option::EXPLODE};
 
 public:
     const Board &board();
@@ -52,6 +52,8 @@ public:
     void bindCallable(const CommandType &type, CommandCallable callable);
 
     void closeConnection();
+
+    OneLeftClient();
 };
 
 

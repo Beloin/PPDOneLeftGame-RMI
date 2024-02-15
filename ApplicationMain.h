@@ -7,8 +7,19 @@
 
 
 #include <QMainWindow>
+#include "OneLeftClient.h"
 
 class ApplicationMain : public QMainWindow {
+
+private:
+    void handle();
+    OneLeftClient client;
+
+    void gameCallable(const RawCommand &command);
+
+    void chatCallable(const RawCommand &command);
+    void optionCallable(const RawCommand &command);
+
 
 public:
     explicit ApplicationMain(QWidget *parent = Q_NULLPTR);
