@@ -31,7 +31,7 @@ class RawCommand {
     + Command command
     - raw_data
 
-    string GetText()
+    string GetText() = 0
 }
 
 class GameCommand {

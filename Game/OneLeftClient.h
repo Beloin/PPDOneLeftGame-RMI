@@ -9,25 +9,49 @@
 #include "client.h"
 #include "Board.h"
 #include "config.h"
+#include "Messages/Command.h"
+
+enum ClientError {
+    CONNECTION = 1,
+    BIG_GAME_NAME = 2,
+    NOT_ACCEPTED = 3,
+    INVALID_DATA = 4
+};
+
+typedef void (*CommandCallable)(const RawCommand &command);
 
 class OneLeftClient : protected Network::Client {
 private:
 //    Board _board{BOARD_SIZE};
     Board _board{};
+    bool isConnected{false};
+
+
+    CommandCallable gameCallable{nullptr};
+    GameCommand gameCommand;
+
+    CommandCallable chatCallable{nullptr};
+    ChatCommand chatCommand;
+
+    CommandCallable optionCallable{nullptr};
+    OptionCommand optionCommand;
 
 public:
     const Board &board();
 
-    void movePiece(int from, int to);
+    int movePiece(int from, int to);
 
-    void flee();
+    int flee();
 
-    void sendMessage(const std::string msg);
+    int sendMessage(const std::string &msg);
 
-    void RequestGame(std::string roomName);
+    void listen();
 
-    int connectToServer(std::string const &host, std::string const &port);
+    int requestGame(std::string const &game, std::string const &host, std::string const &port);
 
+    void bindCallable(const CommandType &type, CommandCallable callable);
+
+    void closeConnection();
 };
 
 

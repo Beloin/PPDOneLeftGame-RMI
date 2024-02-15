@@ -14,7 +14,7 @@ void GameClient::operator()(const GameClient &other) const {
     // TODO: When a client after start-command, something goes wrong
 
     std::cout << "Started Gateway for Client " << *this << std::endl;
-    char buffer[65536]; // High to receive TEXT
+    char buffer[65536]; // High to receive TEXT // TODO: Use dynamic memory
     ssize_t status = 0;
 
     buffer[0] = 1;
@@ -52,7 +52,7 @@ void GameClient::operator()(const GameClient &other) const {
                 if (status <= 0) break;
                 // IF is FLEE, remove from here
                 // Check for winners... Where?
-                status = Utils::rbytes(fd, (unsigned char *) buffer, 1);
+                status = Utils::sbytes(other.fd, (unsigned char *) buffer, 1);
                 break;
             default:
                 break;
