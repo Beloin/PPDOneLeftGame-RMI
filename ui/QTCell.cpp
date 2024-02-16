@@ -31,7 +31,6 @@ QTCell::QTCell(Cell &cell, QPoint pos) : cell(cell), pos(pos) {
 void QTCell::mousePressEvent(QGraphicsSceneMouseEvent *event) {
     // TODO: Use Global Object to match Game Machine
     //   pos
-
     if (event->button() == Qt::LeftButton) {
         qDebug() << "Left mouse button pressed!";
     } else if (event->button() == Qt::RightButton) {

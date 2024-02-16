@@ -97,14 +97,6 @@ void OneLeftClient::listen() {
     std::cout << "Connection Closed with Server { fd: " << server_fd << ", addr: " << server_addr << " }" << std::endl;
 }
 
-//void OneLeftClient::bindCallable(const CommandType &type, CommandCallable callable) {
-//    if (type == CommandType::GAME) { this->gameCallable = callable; }
-//
-//    if (type == CommandType::CHAT) { this->chatCallable = callable; }
-//
-//    if (type == CommandType::OPTION) { this->optionCallable = callable; }
-//}
-
 int OneLeftClient::movePiece(int from, int to) {
     char buffer[2]; // High to receive TEXT
     buffer[0] = CommandType::GAME;

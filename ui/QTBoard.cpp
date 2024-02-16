@@ -5,10 +5,10 @@
 #include "QTBoard.h"
 #include "QGraphicsRectItem"
 
-QTBoard::QTBoard(QGraphicsScene *scene, QWidget *parent) : QGraphicsView(scene, parent) {
-    for (int i = 0; i < board.size(); i++) {
-        for (int j = 0; j < board.size(); j++) {
-            auto *cell = new QTCell{board.at(i, j), QPoint{i, j}};
+QTBoard::QTBoard(Board board, QGraphicsScene *scene, QWidget *parent) : QGraphicsView(scene, parent), board(board) {
+    for (int i = 0; i < this->board.size(); i++) {
+        for (int j = 0; j < this->board.size(); j++) {
+            auto *cell = new QTCell{this->board.at(i, j), QPoint{i, j}};
             this->scene()->addItem(cell);
         }
     }

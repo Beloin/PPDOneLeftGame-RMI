@@ -12,13 +12,15 @@
 class QTBoard : public QGraphicsView {
 
 private:
-    Board board{};
+    Board &board;
 
 public:
-    QTBoard(QGraphicsScene *scene, QWidget *parent);
+    QTBoard(Board board, QGraphicsScene *scene, QWidget *parent);
 
 protected:
     void paintEvent(QPaintEvent *event) override;
+
+
 };
 
 

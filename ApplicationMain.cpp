@@ -18,7 +18,12 @@ ApplicationMain::ApplicationMain(QWidget *parent) : QMainWindow(parent) {
     setLayoutDirection(Qt::RightToLeft);
 
     auto scene = new QGraphicsScene{this};
-    auto board = new QTBoard{scene, this}; // TODO: Sent client?
+    auto board = new QTBoard{this->client.board(), scene, this};
+
+    // TODO: Start and setup game...
+    // TODO: How to update game and board?
+    //  Add observable in board? use interface instead of callable...
+    //  Could use the StateMachineGame to update all UI
 
     QInputDialog dialog = new QInputDialog(this);
 
@@ -102,6 +107,14 @@ void ApplicationMain::listen() {
 
 void ApplicationMain::flee() {
     this->client.flee();
+}
+
+void ApplicationMain::moveCell(int x, int y) {
+    this->client.movePiece(x, y);
+}
+
+void ApplicationMain::sendMessage(const std::string &message) {
+    this->client.sendMessage(message);
 }
 
 

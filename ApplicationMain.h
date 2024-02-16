@@ -29,6 +29,10 @@ private:
 
     void flee();
 
+    void moveCell(int x, int y);
+
+    void sendMessage(const std::string&);
+
 public:
     explicit ApplicationMain(QWidget *parent = Q_NULLPTR);
 
