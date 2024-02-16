@@ -8,18 +8,26 @@
 
 #include <QMainWindow>
 #include "OneLeftClient.h"
+#include <thread>
 
 class ApplicationMain : public QMainWindow {
 
 private:
     void handle();
+
     OneLeftClient client;
+    std::thread clientListen;
+    std::string serverAddress{};
 
     void gameCallable(const RawCommand &command);
 
     void chatCallable(const RawCommand &command);
+
     void optionCallable(const RawCommand &command);
 
+    void listen();
+
+    void flee();
 
 public:
     explicit ApplicationMain(QWidget *parent = Q_NULLPTR);

@@ -19,10 +19,9 @@ enum Option {
 };
 
 class RawCommand {
-private:
+public:
     CommandType commandType;
 
-public:
     explicit RawCommand(CommandType commandType) : commandType(commandType) {};
 };
 

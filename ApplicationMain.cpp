@@ -7,15 +7,18 @@
 #include <QBoxLayout>
 #include <QInputDialog>
 #include <QDir>
+#include <QMessageBox>
 #include "ApplicationMain.h"
 #include "ui/QTBoard.h"
+
+static ApplicationMain *onCall = nullptr;
 
 ApplicationMain::ApplicationMain(QWidget *parent) : QMainWindow(parent) {
     setFixedSize(1200, 800);
     setLayoutDirection(Qt::RightToLeft);
 
     auto scene = new QGraphicsScene{this};
-    auto board = new QTBoard{scene, this};
+    auto board = new QTBoard{scene, this}; // TODO: Sent client?
 
     QInputDialog dialog = new QInputDialog(this);
 
@@ -34,8 +37,20 @@ ApplicationMain::ApplicationMain(QWidget *parent) : QMainWindow(parent) {
     mainWidget->setLayout(vbox);
     setCentralWidget(mainWidget);
 
-    client.bindCallable(CommandType::GAME, ApplicationMain::gameCallable);
-    client.bindCallable(CommandType::GAME, &ApplicationMain::gameCallable);
+    auto fleeButton = new QPushButton{"Flee", this};
+    fleeButton->setLayoutDirection(Qt::RightToLeft);
+    connect(fleeButton, &QPushButton::released, this, &ApplicationMain::flee);
+
+    onCall = this;
+    client.bindCallable(CommandType::GAME, [](const RawCommand &command) {
+        onCall->gameCallable(command);
+    });
+    client.bindCallable(CommandType::CHAT, [](const RawCommand &command) {
+        onCall->chatCallable(command);
+    });
+    client.bindCallable(CommandType::OPTION, [](const RawCommand &command) {
+        onCall->optionCallable(command);
+    });
 }
 
 void ApplicationMain::handle() {
@@ -45,11 +60,49 @@ void ApplicationMain::handle() {
                                                       tr("Servidor"), QLineEdit::Normal, "localhost", &ok);
 
     if (ok && !serverName.isEmpty()) {
-        // TODO: Start thread here
-        int status = client.requestGame("NewGame", serverName.toStdString(), "6969");
-
-        if (status == 0) std::cout << "Connected." << std::endl;
+        serverAddress = serverName.toStdString();
+        clientListen = std::thread{&ApplicationMain::listen, this};
+        clientListen.detach();
+//        // TODO: Start thread here
+//        int status = client.requestGame("NewGame", serverName.toStdString(), "6969");
+//
+//        if (status == 0) std::cout << "Connected." << std::endl;
+//        client.listen();
     }
 }
+
+void ApplicationMain::gameCallable(const RawCommand &command) {
+    auto game = (GameCommand *) &command;
+    std::cout << "Command: " << command.commandType << std::endl;
+}
+
+void ApplicationMain::chatCallable(const RawCommand &command) {
+    auto chat = (ChatCommand *) &command;
+    std::cout << "Command: " << command.commandType << std::endl;
+}
+
+void ApplicationMain::optionCallable(const RawCommand &command) {
+    auto option = (OptionCommand *) &command;
+    std::cout << "Option Command: " << option->option << std::endl;
+}
+
+void ApplicationMain::listen() {
+    int status = client.requestGame("NewGame", serverAddress, "6969");
+    if (status != 0) {
+        QMessageBox msgBox;
+        msgBox.setText("Could not connect to Game");
+        msgBox.exec();
+        return;
+    }
+
+    std::cout << "Connected." << std::endl;
+
+    client.listen();
+}
+
+void ApplicationMain::flee() {
+    this->client.flee();
+}
+
 
 
