@@ -18,6 +18,8 @@ ApplicationMain::ApplicationMain(QWidget *parent) : QMainWindow(parent) {
     setLayoutDirection(Qt::RightToLeft);
 
     auto scene = new QGraphicsScene{this};
+
+    // TODO: Remove board from client to use on StateMachine
     qtBoard = new QTBoard{this->client.board(), scene, this};
     // TODO: Start and setup game...
     // TODO: How to update game and qtBoard?
@@ -45,6 +47,7 @@ ApplicationMain::ApplicationMain(QWidget *parent) : QMainWindow(parent) {
     fleeButton->setLayoutDirection(Qt::RightToLeft);
     connect(fleeButton, &QPushButton::released, this, &ApplicationMain::flee);
 
+    // TODO: To change this, we will add all callbacks to GameStateMachine and from there use OberservablePattern to update BoardUI and ChatUI
     onCall = this;
     client.bindCallable(CommandType::GAME, [](const RawCommand &command) {
         onCall->gameCallable(command);
@@ -85,6 +88,7 @@ void ApplicationMain::optionCallable(const RawCommand &command) {
     std::cout << "Option Command: " << option->option << std::endl;
 }
 
+// TODO: Move this too to GameStateMachine
 void ApplicationMain::listen() {
     int status = client.requestGame("NewGame", serverAddress, "6969");
     if (status != 0) {
@@ -101,15 +105,15 @@ void ApplicationMain::listen() {
 }
 
 void ApplicationMain::flee() {
-    this->client.flee();
+    this->client.flee(); // TODO: Here we could send option to GameStateMachine
 }
 
 void ApplicationMain::moveCell(int x, int y) {
-    this->client.movePiece(x, y);
+    this->client.movePiece(x, y); // TODO: Here we could send command to GameStateMachine
 }
 
 void ApplicationMain::sendMessage(const std::string &message) {
-    this->client.sendMessage(message);
+    this->client.sendMessage(message); // TODO: Here we could send message to GameStateMachine
 }
 
 
