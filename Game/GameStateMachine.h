@@ -26,7 +26,9 @@ namespace StateMachine {
         GAME,
         GAME_2,
         CHAT,
-        OPTION
+        OPTION,
+        LOST,
+        WON
     };
 
     class GameStateMachine {
@@ -50,6 +52,7 @@ namespace StateMachine {
 
         // TODO: Add from "other" here too?
         //  I mean, use all bypass from here, to control how game works?
+        //  Maybe change the listen in OneLeftClient to "nextCommand" or something like that
 
 
     };
