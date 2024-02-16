@@ -9,8 +9,8 @@ Cell &Board::at(int i, int j) {
     return board[i][j];
 }
 
-//Board::Board(int size) : board(size) {
-//    for (auto &vec: board) {
+//Board::Board(int size) : qtBoard(size) {
+//    for (auto &vec: qtBoard) {
 //        vec = std::vector<Cell>(size);
 //        for (int i = 0; i < size; i++) {
 //

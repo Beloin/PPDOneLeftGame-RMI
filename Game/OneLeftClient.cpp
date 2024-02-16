@@ -8,7 +8,7 @@
 #include "socket_utils.h"
 #include "Messages/Command.h"
 
-const Board &OneLeftClient::board() {
+Board &OneLeftClient::board() {
     return _board;
 }
 

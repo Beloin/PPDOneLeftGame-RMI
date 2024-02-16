@@ -15,7 +15,9 @@ private:
     Board &board;
 
 public:
-    QTBoard(Board board, QGraphicsScene *scene, QWidget *parent);
+    QTBoard(Board& board, QGraphicsScene *scene, QWidget *parent);
+
+    void updateCells();
 
 protected:
     void paintEvent(QPaintEvent *event) override;

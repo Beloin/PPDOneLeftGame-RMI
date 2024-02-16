@@ -5,7 +5,7 @@
 #include "QTBoard.h"
 #include "QGraphicsRectItem"
 
-QTBoard::QTBoard(Board board, QGraphicsScene *scene, QWidget *parent) : QGraphicsView(scene, parent), board(board) {
+QTBoard::QTBoard(Board& board, QGraphicsScene *scene, QWidget *parent) : QGraphicsView(scene, parent), board(board) {
     for (int i = 0; i < this->board.size(); i++) {
         for (int j = 0; j < this->board.size(); j++) {
             auto *cell = new QTCell{this->board.at(i, j), QPoint{i, j}};
@@ -23,6 +23,13 @@ QTBoard::QTBoard(Board board, QGraphicsScene *scene, QWidget *parent) : QGraphic
 
 void QTBoard::paintEvent(QPaintEvent *event) {
     QGraphicsView::paintEvent(event);
+}
+
+void QTBoard::updateCells() {
+    const QList<QGraphicsItem *> &list = this->scene()->items(); // Use this instead os vector
+    for (const auto &item: list) {
+        item->update(); // Updates drawable QTCell
+    }
 }
 
 

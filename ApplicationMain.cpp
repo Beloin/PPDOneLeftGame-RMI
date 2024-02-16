@@ -18,11 +18,10 @@ ApplicationMain::ApplicationMain(QWidget *parent) : QMainWindow(parent) {
     setLayoutDirection(Qt::RightToLeft);
 
     auto scene = new QGraphicsScene{this};
-    auto board = new QTBoard{this->client.board(), scene, this};
-
+    qtBoard = new QTBoard{this->client.board(), scene, this};
     // TODO: Start and setup game...
-    // TODO: How to update game and board?
-    //  Add observable in board? use interface instead of callable...
+    // TODO: How to update game and qtBoard?
+    //  Add observable in qtBoard? use interface instead of callable...
     //  Could use the StateMachineGame to update all UI
 
     QInputDialog dialog = new QInputDialog(this);
@@ -36,7 +35,7 @@ ApplicationMain::ApplicationMain(QWidget *parent) : QMainWindow(parent) {
     hbox->addWidget(button);
 
     auto vbox = new QVBoxLayout();
-    vbox->addWidget(board);
+    vbox->addWidget(qtBoard);
     vbox->addItem(hbox);
 
     mainWidget->setLayout(vbox);
@@ -68,11 +67,6 @@ void ApplicationMain::handle() {
         serverAddress = serverName.toStdString();
         clientListen = std::thread{&ApplicationMain::listen, this};
         clientListen.detach();
-//        // TODO: Start thread here
-//        int status = client.requestGame("NewGame", serverName.toStdString(), "6969");
-//
-//        if (status == 0) std::cout << "Connected." << std::endl;
-//        client.listen();
     }
 }
 
@@ -101,6 +95,7 @@ void ApplicationMain::listen() {
     }
 
     std::cout << "Connected." << std::endl;
+    qtBoard->updateCells();
 
     client.listen();
 }

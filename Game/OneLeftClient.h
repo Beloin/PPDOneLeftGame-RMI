@@ -37,7 +37,7 @@ private:
     OptionCommand optionCommand{Option::EXPLODE};
 
 public:
-    const Board &board();
+    Board &board();
 
     int movePiece(int from, int to);
 

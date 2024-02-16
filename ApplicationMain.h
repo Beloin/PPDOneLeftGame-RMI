@@ -8,6 +8,7 @@
 
 #include <QMainWindow>
 #include "OneLeftClient.h"
+#include "ui/QTBoard.h"
 #include <thread>
 
 class ApplicationMain : public QMainWindow {
@@ -15,9 +16,10 @@ class ApplicationMain : public QMainWindow {
 private:
     void handle();
 
-    OneLeftClient client;
+    OneLeftClient client{};
     std::thread clientListen;
     std::string serverAddress{};
+    QTBoard *qtBoard;
 
     void gameCallable(const RawCommand &command);
 
