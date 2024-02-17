@@ -6,8 +6,8 @@
 
 #include <utility>
 
-GameCommand::GameCommand(const int from, const int to)
-        : RawCommand(CommandType::GAME), from(from), to(to) {
+GameCommand::GameCommand(int fromX, int fromY, int toX, int toY)
+        : RawCommand(CommandType::GAME), fromX(fromX), fromY(fromY), toX(toX), toY(toY) {
 
 }
 
@@ -15,8 +15,10 @@ GameCommand &GameCommand::operator=(GameCommand &&other) noexcept {
     if (this == &other)
         return *this;
 
-    this->from = other.from;
-    this->to = other.to;
+    this->fromX = other.fromX;
+    this->fromY = other.fromY;
+    this->toX = other.toX;
+    this->toY = other.toY;
 
     return *this;
 }

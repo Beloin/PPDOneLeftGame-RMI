@@ -52,3 +52,10 @@ void Board::setup() {
 void Board::reset() {
     setup();
 }
+
+void Board::move(int fromX, int fromY, int toX, int toY) {
+    // TODO: Add game validation here
+
+    at(fromX, fromY).toggle();
+    at(toX, toY).toggle();
+}

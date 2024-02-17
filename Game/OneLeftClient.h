@@ -24,11 +24,10 @@ class OneLeftClient : protected Network::Client {
 private:
 //    Board _board{BOARD_SIZE};
     Board _board{};
-    bool isConnected{false};
-
+    bool _isConnected{false};
 
     CommandCallable gameCallable{nullptr};
-    GameCommand gameCommand{-1, -1};
+    GameCommand gameCommand{-1, -1, -1, -1};
 
     CommandCallable chatCallable{nullptr};
     ChatCommand chatCommand{""};
@@ -39,7 +38,7 @@ private:
 public:
     Board &board();
 
-    int movePiece(int from, int to);
+    int movePiece(int fromX, int fromY, int toX, int toY);
 
     int flee();
 
@@ -54,6 +53,10 @@ public:
     void closeConnection();
 
     OneLeftClient();
+
+    bool isStartTurn{false};
+
+    [[nodiscard]] bool isConnected() const;
 };
 
 

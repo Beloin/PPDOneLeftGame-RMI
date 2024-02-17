@@ -18,11 +18,13 @@ public:
     std::string clientAddr;
 
     GameClient(int id, int fd);
+
     GameClient(int id, int fd, std::string clientAddr);
 
-    void operator()(const GameClient &other) const;
+    void operator()(const GameClient &other, bool isStartTurn) const;
 
     friend std::ostream &operator<<(std::ostream &os, const GameClient &client);
+
     friend std::ostream &operator<<(std::ostream &os, const GameClient *client);
 
 };

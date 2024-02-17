@@ -27,10 +27,12 @@ public:
 
 class GameCommand : public RawCommand {
 public:
-    int from;
-    int to;
+    int fromX;
+    int fromY;
+    int toX;
+    int toY;
 
-    GameCommand(int from, int to);
+    GameCommand(int fromX, int fromY, int toX, int toY);
 
     GameCommand &operator=(GameCommand &&other) noexcept;
 

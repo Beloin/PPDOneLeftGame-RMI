@@ -8,53 +8,73 @@
 #include <string>
 #include "Messages/Command.h"
 #include "Board.h"
+#include "OneLeftClient.h"
 
 namespace StateMachine {
 
-    class Observable {
-        virtual void OnOption(Option &option) = 0;
+    enum State {
+        NOT_STARTED = 0,
+        IDLE = 1,
+        MY_TURN = 2,
+        GAME = 3,
+        GAME_2 = 4,
+        CHAT = 5,
+        OPTION = 6,
+        LOST = 7,
+        WON = 8
+    };
+
+    class Observer {
+    public:
+        virtual void OnMove(int fromX, int fromY, int toX, int toY) = 0;
 
         virtual void OnMessage(std::string message) = 0;
 
-        virtual void OnMove(int x, int y) = 0;
+        virtual void OnOption(Option &option) = 0;
+
+        virtual void OnStatusUpdate(const State &state) = 0;
     };
 
-    enum State {
-        NOT_STARTED,
-        IDLE,
-        MY_TURN,
-        GAME,
-        GAME_2,
-        CHAT,
-        OPTION,
-        LOST,
-        WON
-    };
-
+    // Should be Singleton
     class GameStateMachine {
     private:
-        State currentState{IDLE};
+        State currentState{NOT_STARTED};
         int x{0}, y{0};
         bool myTurn{false};
-        Observable *observable;
+        Observer *observer{nullptr};
+        Board _board{};
 
-        Board board{};
+        OneLeftClient client{};
 
+        void gameCallable(const RawCommand &command);
+
+        void chatCallable(const RawCommand &command);
+
+        void optionCallable(const RawCommand &command);
 
     public:
-        void addPosition(int x, int y);
 
-        void sendChat(std::string);
+        int requestGame(const std::string &game, const std::string &host, const std::string &port);
 
-        void sendOption(const Option &option);
+        void listen();
+
+        int movePiece(int fromX, int fromY, int toX, int toY);
+
+        int sendChat(const std::string &);
+
+        int flee();
 
         void reset();
 
-        // TODO: Add from "other" here too?
-        //  I mean, use all bypass from here, to control how game works?
-        //  Maybe change the listen in OneLeftClient to "nextCommand" or something like that
+        void disconnect();
 
+        void setObserver(Observer *);
 
+        bool isConnected();
+
+        GameStateMachine();
+
+        Board &board();
     };
 }
 

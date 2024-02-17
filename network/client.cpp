@@ -39,13 +39,13 @@ int Client::ConnectToServer(std::string const &host, std::string const &port) {
 
     for (p = servinfo; p != nullptr; p = p->ai_next) {
         if ((server_fd = socket(p->ai_family, p->ai_socktype, p->ai_protocol)) == -1) {
-            perror("client: socket");
+//            perror("client: socket");
             continue;
         }
 
         if (connect(server_fd, p->ai_addr, p->ai_addrlen) == -1) {
             close(server_fd);
-            perror("client connect");
+//            perror("client connect");
             continue;
         }
 

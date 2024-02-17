@@ -9,15 +9,12 @@
 #include "socket_utils.h"
 #include "Messages/Command.h"
 
-void GameClient::operator()(const GameClient &other) const {
-    // TODO: What todo when client close connections?
-    // TODO: When a client after start-command, something goes wrong
-
+void GameClient::operator()(const GameClient &other, bool isStartTurn) const {
     std::cout << "Started Gateway for Client " << *this << std::endl;
     char buffer[65536]; // High to receive TEXT // TODO: Use dynamic memory
     ssize_t status = 0;
 
-    buffer[0] = 1;
+    buffer[0] = isStartTurn ? 4 : 1;
     status = Utils::sbytes(fd, (unsigned char *) buffer, 1);
 
     std::cout << "Sent start command for Client " << this << std::endl;
@@ -33,9 +30,9 @@ void GameClient::operator()(const GameClient &other) const {
         switch (buffer[0]) {
             case CommandType::GAME:
                 std::cout << "Proxying GAME COMMAND for Client " << this << std::endl;
-                status = Utils::rbytes(fd, (unsigned char *) buffer, 2);
+                status = Utils::rbytes(fd, (unsigned char *) buffer, 4);
                 if (status <= 0) break;
-                status = Utils::sbytes(other.fd, (unsigned char *) buffer, 2);
+                status = Utils::sbytes(other.fd, (unsigned char *) buffer, 4);
                 break;
             case CommandType::CHAT:
                 std::cout << "Proxying CHAT COMMAND for Client {" << id << "}" << std::endl;

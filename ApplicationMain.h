@@ -9,34 +9,33 @@
 #include <QMainWindow>
 #include "OneLeftClient.h"
 #include "ui/QTBoard.h"
+#include "GameStateMachine.h"
 #include <thread>
 
-class ApplicationMain : public QMainWindow {
+class ApplicationMain : public QMainWindow, public StateMachine::Observer {
 
 private:
-    void handle();
-
-    OneLeftClient client{};
     std::thread clientListen;
+
     std::string serverAddress{};
     QTBoard *qtBoard;
 
-    void gameCallable(const RawCommand &command);
-
-    void chatCallable(const RawCommand &command);
-
-    void optionCallable(const RawCommand &command);
-
     void listen();
 
-    void flee();
+    void handle();
 
-    void moveCell(int x, int y);
-
-    void sendMessage(const std::string&);
+    StateMachine::GameStateMachine game{};
 
 public:
     explicit ApplicationMain(QWidget *parent = Q_NULLPTR);
+
+    void OnMove(int fromX, int fromY, int toX, int toY) override;
+
+    void OnMessage(std::string message) override;
+
+    void OnOption(Option &option) override;
+
+    void OnStatusUpdate(const StateMachine::State &state) override;
 
 };
 

@@ -42,13 +42,14 @@ int OneLeftClient::requestGame(const std::string &game, const std::string &host,
     }
 
     _board.setup();
-    isConnected = true;
+    _isConnected = true;
+    isStartTurn = buffer == 4;
 
     return 0;
 }
 
 void OneLeftClient::listen() {
-    if (!isConnected) return;
+    if (!_isConnected) return;
 
     // TODO: Use dynamic memory
     char buffer[65536]; // High to receive TEXT
@@ -62,10 +63,10 @@ void OneLeftClient::listen() {
         int len;
         switch (buffer[0]) {
             case CommandType::GAME:
-                status = Utils::rbytes(server_fd, (unsigned char *) buffer, 2);
+                status = Utils::rbytes(server_fd, (unsigned char *) buffer, 4);
                 if (status <= 0) break;
 
-                gameCommand = GameCommand{buffer[0], buffer[1]};
+                gameCommand = GameCommand{buffer[0], buffer[1], buffer[2], buffer[3]};
                 if (gameCallable != nullptr) gameCallable(gameCommand);
 
                 break;
@@ -97,17 +98,25 @@ void OneLeftClient::listen() {
     std::cout << "Connection Closed with Server { fd: " << server_fd << ", addr: " << server_addr << " }" << std::endl;
 }
 
-int OneLeftClient::movePiece(int from, int to) {
-    char buffer[2]; // High to receive TEXT
+int OneLeftClient::movePiece(int fromX, int fromY, int toX, int toY) {
+    char buffer[4];
     buffer[0] = CommandType::GAME;
 
     ssize_t status = Utils::sbytes(server_fd, (unsigned char *) (buffer), 1);
-    if (status <= 0) return ClientError::CONNECTION;
+    if (status <= 0) {
+        closeConnection();
+        return ClientError::CONNECTION;
+    }
 
-    buffer[0] = (char) from;
-    buffer[1] = (char) to;
+    buffer[0] = (char) fromX;
+    buffer[1] = (char) fromY;
+    buffer[2] = (char) toX;
+    buffer[3] = (char) toY;
     status = Utils::sbytes(server_fd, (unsigned char *) (buffer), 2);
-    if (status <= 0) return ClientError::CONNECTION;
+    if (status <= 0) {
+        closeConnection();
+        return ClientError::CONNECTION;
+    }
 
     return 0;
 }
@@ -120,22 +129,32 @@ int OneLeftClient::sendMessage(const std::string &msg) {
     buffer[0] = CommandType::CHAT;
 
     ssize_t status = Utils::sbytes(server_fd, (unsigned char *) (buffer), 1);
-    if (status <= 0) return ClientError::CONNECTION;
+    if (status <= 0) {
+        closeConnection();
+        return ClientError::CONNECTION;
+    }
 
     buffer[0] = (char) (length >> 8);
     buffer[1] = (char) length;
 
     status = Utils::sbytes(server_fd, (unsigned char *) (buffer), 2);
-    if (status <= 0) return ClientError::CONNECTION;
+    if (status <= 0) {
+        closeConnection();
+        return ClientError::CONNECTION;
+    }
 
     status = Utils::sbytes(server_fd, (unsigned char *) (msg.c_str()), length);
-    if (status <= 0) return ClientError::CONNECTION;
+    if (status <= 0) {
+        closeConnection();
+        return ClientError::CONNECTION;
+    }
 
     return 0;
 }
 
 void OneLeftClient::closeConnection() {
     hasConnected = false;
+    _isConnected = false;
     close(server_fd);
 }
 
@@ -144,11 +163,17 @@ int OneLeftClient::flee() {
     buffer[0] = CommandType::OPTION;
 
     ssize_t status = Utils::sbytes(server_fd, (unsigned char *) (buffer), 1);
-    if (status <= 0) return ClientError::CONNECTION;
+    if (status <= 0) {
+        closeConnection();
+        return ClientError::CONNECTION;
+    }
 
     buffer[0] = Option::FLEE;
     status = Utils::sbytes(server_fd, (unsigned char *) (buffer), 1);
-    if (status <= 0) return ClientError::CONNECTION;
+    if (status <= 0) {
+        closeConnection();
+        return ClientError::CONNECTION;
+    }
 
     return 0;
 }
@@ -161,5 +186,9 @@ void OneLeftClient::bindCallable(const CommandType &type, CommandCallable callab
     if (type == CommandType::CHAT) { this->chatCallable = callable; }
 
     if (type == CommandType::OPTION) { this->optionCallable = callable; }
+}
+
+bool OneLeftClient::isConnected() const {
+    return _isConnected;
 }
 
