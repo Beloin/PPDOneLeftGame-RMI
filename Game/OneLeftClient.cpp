@@ -18,6 +18,7 @@ int OneLeftClient::requestGame(const std::string &game, const std::string &host,
 
     ssize_t status = ConnectTo(host, port);
     if (status != 0) return ClientError::CONNECTION;
+    _isConnected = true;
 
     std::string result{game};
     for (int i = result.length(); i < 255; i++) {
@@ -27,6 +28,7 @@ int OneLeftClient::requestGame(const std::string &game, const std::string &host,
     // Query for game
     status = Utils::sbytes(server_fd, (unsigned char *) result.c_str(), 255);
     if (status <= 0) {
+        _isConnected = false;
         return ClientError::CONNECTION;
     }
 
@@ -34,15 +36,16 @@ int OneLeftClient::requestGame(const std::string &game, const std::string &host,
     unsigned char buffer;
     status = Utils::rbytes(server_fd, &buffer, 1);
     if (status <= 0) {
+        _isConnected = false;
         return ClientError::CONNECTION;
     }
 
     if (!buffer) {
+        _isConnected = false;
         return ClientError::NOT_ACCEPTED;
     }
 
     _board.setup();
-    _isConnected = true;
     isStartTurn = buffer == 4;
 
     return 0;
