@@ -43,8 +43,8 @@ namespace StateMachine {
         bool myTurn{false};
         Observer *observer{nullptr};
         Board _board{};
-        Cell *firstCell;
-        Cell *secondCell;
+        Cell *firstCell{nullptr};
+        Cell *secondCell{nullptr};
 
         OneLeftClient client{};
 
@@ -84,7 +84,6 @@ namespace StateMachine {
 
         static GameStateMachine *getInstance();
 
-        int movePiece(int fromX, int fromY, int toX, int toY);
     };
 }
 

@@ -45,8 +45,12 @@ void QTCell::mousePressEvent(QGraphicsSceneMouseEvent *event) {
 //        qDebug() << "Right mouse button pressed!";
 //    }
 
-    StateMachine::GameStateMachine *pStateMachine = StateMachine::GameStateMachine::getInstance();
-    pStateMachine->selectCell(&this->cell);
+    if (!this->cell.isSelected()) {
+        StateMachine::GameStateMachine *pStateMachine = StateMachine::GameStateMachine::getInstance();
+        pStateMachine->selectCell(&this->cell);
+    } else {
+//        pStateMachine->unSelectCell(&this->cell)
+    }
 
     QGraphicsItem::mousePressEvent(event);
 }

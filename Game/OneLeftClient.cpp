@@ -115,7 +115,7 @@ int OneLeftClient::movePiece(int fromX, int fromY, int toX, int toY) {
     buffer[1] = (char) fromY;
     buffer[2] = (char) toX;
     buffer[3] = (char) toY;
-    status = Utils::sbytes(server_fd, (unsigned char *) (buffer), 2);
+    status = Utils::sbytes(server_fd, (unsigned char *) (buffer), 4);
     if (status <= 0) {
         closeConnection();
         return ClientError::CONNECTION;

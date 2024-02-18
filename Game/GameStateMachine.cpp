@@ -61,10 +61,6 @@ StateMachine::GameStateMachine::GameStateMachine() {
 void StateMachine::GameStateMachine::gameCallable(const RawCommand &command) {
     auto game = (GameCommand *) &command;
 
-    myTurn = true;
-    currentState = MY_TURN;
-    observer->OnStatusUpdate(currentState);
-
     int fromX = game->fromX;
     int fromY = game->fromY;
     int toX = game->toX;
@@ -74,6 +70,10 @@ void StateMachine::GameStateMachine::gameCallable(const RawCommand &command) {
     _board.move(fromX, fromY, toX, toY);
 
     observer->OnMove(fromX, fromY, toX, toY);
+
+    myTurn = true;
+    currentState = MY_TURN;
+    observer->OnStatusUpdate(currentState);
 }
 
 void StateMachine::GameStateMachine::chatCallable(const RawCommand &command) {
@@ -105,6 +105,7 @@ void StateMachine::GameStateMachine::disconnect() {
     client.closeConnection();
 }
 
+// TODO: Remove selection
 bool StateMachine::GameStateMachine::selectCell(Cell *cell) {
     if (currentState != MY_TURN && currentState != CHOICE_ONE) return false;
 
@@ -134,16 +135,19 @@ GameStateMachine *StateMachine::GameStateMachine::getInstance() {
 bool StateMachine::GameStateMachine::sendMove() {
     if (currentState != CHOICE_TWO) return false;
 
+    board().move(firstCell->x(), firstCell->y(), secondCell->x(), secondCell->y());
     client.movePiece(firstCell->x(), firstCell->y(), secondCell->x(), secondCell->y());
 
     firstCell->setSelected(false);
     firstCell = nullptr;
-    secondCell->setSelected(true);
+    secondCell->setSelected(false);
     secondCell = nullptr;
 
     currentState = IDLE;
 
     observer->OnStatusUpdate(currentState);
+
+    return true;
 }
 
 
