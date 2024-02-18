@@ -38,8 +38,13 @@ void GameClient::operator()(const GameClient &other, bool isStartTurn) const {
                 std::cout << "Proxying CHAT COMMAND for Client {" << id << "}" << std::endl;
                 status = Utils::rbytes(fd, (unsigned char *) buffer, 2);
                 if (status <= 0) break;
+
+                status = Utils::sbytes(other.fd, (unsigned char *) buffer, 2);
+                if (status <= 0) break;
+
                 len = (((int) buffer[0]) << 8) | buffer[1];
                 status = Utils::rbytes(fd, (unsigned char *) buffer, len);
+
                 if (status <= 0) break;
                 status = Utils::sbytes(other.fd, (unsigned char *) buffer, len);
                 break;

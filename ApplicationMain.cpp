@@ -93,6 +93,7 @@ void ApplicationMain::OnMove(int fromX, int fromY, int toX, int toY) {
 }
 
 void ApplicationMain::OnMessage(std::string message) {
+    std::cout << "Received Chat: " << message << std::endl;
     chat->addOpponentMessage(message);
 }
 

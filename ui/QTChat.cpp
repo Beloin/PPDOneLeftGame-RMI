@@ -21,6 +21,7 @@ void QTChat::addOpponentMessage(const std::string &msg) {
 }
 
 void QTChat::sendMessage() {
+    // TODO: Send only when connected
     const QString &string = lineEdit->text();
 
     if (string.isNull() || string.isEmpty()) return;
