@@ -6,10 +6,11 @@
 #define ONE_LEFT_ONELEFTCLIENT_H
 
 
-#include "client.h"
+//#include "client.h"
 #include "Board.h"
 #include "config.h"
 #include "Messages/Command.h"
+#include "../network/client.h"
 
 enum ClientError {
     CONNECTION = 1,

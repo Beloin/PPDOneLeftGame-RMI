@@ -16,8 +16,8 @@ namespace StateMachine {
         NOT_STARTED = 0,
         IDLE = 1,
         MY_TURN = 2,
-        GAME = 3,
-        GAME_2 = 4,
+        CHOICE_ONE = 3,
+        CHOICE_TWO = 4,
         CHAT = 5,
         OPTION = 6,
         LOST = 7,
@@ -32,7 +32,7 @@ namespace StateMachine {
 
         virtual void OnOption(Option &option) = 0;
 
-        virtual void OnStatusUpdate(const State &state) = 0;
+        virtual void OnStatusUpdate(State state) = 0;
     };
 
     // Should be Singleton
@@ -43,6 +43,8 @@ namespace StateMachine {
         bool myTurn{false};
         Observer *observer{nullptr};
         Board _board{};
+        Cell *firstCell;
+        Cell *secondCell;
 
         OneLeftClient client{};
 
@@ -52,13 +54,19 @@ namespace StateMachine {
 
         void optionCallable(const RawCommand &command);
 
+        static GameStateMachine *_instance;
+
+        GameStateMachine();
+
     public:
 
         int requestGame(const std::string &game, const std::string &host, const std::string &port);
 
         void listen();
 
-        int movePiece(int fromX, int fromY, int toX, int toY);
+        bool selectCell(Cell *cell);
+
+        bool sendMove();
 
         int sendChat(const std::string &);
 
@@ -72,9 +80,11 @@ namespace StateMachine {
 
         bool isConnected();
 
-        GameStateMachine();
-
         Board &board();
+
+        static GameStateMachine *getInstance();
+
+        int movePiece(int fromX, int fromY, int toX, int toY);
     };
 }
 

@@ -19,3 +19,11 @@ void Cell::setActivation(bool v) {
 bool Cell::isValid() const {
     return valid;
 }
+
+void Cell::setSelected(bool v) {
+    selected = v;
+}
+
+bool Cell::isSelected() {
+    return selected;
+}

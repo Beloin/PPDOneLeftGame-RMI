@@ -12,7 +12,7 @@ Read 1° Byte as Command Type:
 
 If CommandType 
 
-1: GAME
+1: CHOICE_ONE
 ```
 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+

@@ -24,7 +24,7 @@ private:
 
     void handle();
 
-    StateMachine::GameStateMachine game{};
+    StateMachine::GameStateMachine *game;
 
 public:
     explicit ApplicationMain(QWidget *parent = Q_NULLPTR);
@@ -35,7 +35,7 @@ public:
 
     void OnOption(Option &option) override;
 
-    void OnStatusUpdate(const StateMachine::State &state) override;
+    void OnStatusUpdate(StateMachine::State state) override;
 
 };
 

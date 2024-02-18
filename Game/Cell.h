@@ -15,19 +15,28 @@ private:
     // Is a valid position
     bool valid{true};
 
+    bool selected{false};
+
+    int _x, _y;
+
 public:
     [[nodiscard]] bool isActive() const;
 
     [[nodiscard]] bool isValid() const;
 
+    [[nodiscard]] bool isSelected();
+
     bool toggle();
 
     void setActivation(bool v);
 
-    Cell() : valid(true) {}
+    void setSelected(bool v);
 
-    explicit Cell(bool valid) : valid(valid) {}
+    Cell(bool valid, int x, int y) : valid(valid), _x(x), _y(y) {}
 
+    [[nodiscard]] int x() const { return _x; }
+
+    [[nodiscard]] int y() const { return _y; }
 };
 
 

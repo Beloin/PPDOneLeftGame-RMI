@@ -7,6 +7,7 @@
 using StateMachine::GameStateMachine;
 
 static GameStateMachine *self;
+GameStateMachine *GameStateMachine::_instance = new GameStateMachine();
 
 int GameStateMachine::requestGame(
         const std::string &game, const std::string &host, const std::string &port
@@ -23,13 +24,6 @@ int GameStateMachine::requestGame(
 
 void StateMachine::GameStateMachine::listen() {
     client.listen();
-}
-
-int StateMachine::GameStateMachine::movePiece(int fromX, int fromY, int toX, int toY) {
-    if (myTurn)
-        return client.movePiece(fromX, fromY, toX, toY);
-
-    return -1;
 }
 
 int StateMachine::GameStateMachine::sendChat(const std::string &msg) {
@@ -52,7 +46,7 @@ bool StateMachine::GameStateMachine::isConnected() {
 }
 
 StateMachine::GameStateMachine::GameStateMachine() {
-    self = this;
+    self = this; // TODO: Use instance instead of this
     client.bindCallable(CommandType::GAME, [](const RawCommand &command) {
         self->gameCallable(command);
     });
@@ -71,12 +65,10 @@ void StateMachine::GameStateMachine::gameCallable(const RawCommand &command) {
     currentState = MY_TURN;
     observer->OnStatusUpdate(currentState);
 
-
     int fromX = game->fromX;
     int fromY = game->fromY;
     int toX = game->toX;
     int toY = game->toY;
-
 
     // TODO: Add game validation
     _board.move(fromX, fromY, toX, toY);
@@ -112,4 +104,48 @@ Board &StateMachine::GameStateMachine::board() {
 void StateMachine::GameStateMachine::disconnect() {
     client.closeConnection();
 }
+
+bool StateMachine::GameStateMachine::selectCell(Cell *cell) {
+    if (currentState != MY_TURN && currentState != CHOICE_ONE) return false;
+
+    if (currentState == CHOICE_ONE) {
+        secondCell = cell;
+        secondCell->setSelected(true);
+        currentState = State::CHOICE_TWO;
+
+        observer->OnStatusUpdate(currentState);
+
+        return true;
+    }
+
+    firstCell = cell;
+    firstCell->setSelected(true);
+    currentState = State::CHOICE_ONE;
+
+    observer->OnStatusUpdate(currentState);
+
+    return true;
+}
+
+GameStateMachine *StateMachine::GameStateMachine::getInstance() {
+    return _instance;
+}
+
+bool StateMachine::GameStateMachine::sendMove() {
+    if (currentState != CHOICE_TWO) return false;
+
+    client.movePiece(firstCell->x(), firstCell->y(), secondCell->x(), secondCell->y());
+
+    firstCell->setSelected(false);
+    firstCell = nullptr;
+    secondCell->setSelected(true);
+    secondCell = nullptr;
+
+    currentState = IDLE;
+
+    observer->OnStatusUpdate(currentState);
+}
+
+
+
 

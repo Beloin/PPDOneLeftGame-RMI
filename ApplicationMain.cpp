@@ -17,10 +17,11 @@ ApplicationMain::ApplicationMain(QWidget *parent) : QMainWindow(parent) {
     setFixedSize(1200, 800);
     setLayoutDirection(Qt::RightToLeft);
 
-    this->game.setObserver(this);
+    this->game = StateMachine::GameStateMachine::getInstance();
+    this->game->setObserver(this);
 
     auto scene = new QGraphicsScene{this};
-    qtBoard = new QTBoard{this->game.board(), scene, this};
+    qtBoard = new QTBoard{this->game->board(), scene, this};
 
     QInputDialog dialog = new QInputDialog(this);
 
@@ -42,13 +43,13 @@ ApplicationMain::ApplicationMain(QWidget *parent) : QMainWindow(parent) {
     auto fleeButton = new QPushButton{"Flee", this};
     fleeButton->setLayoutDirection(Qt::RightToLeft);
     connect(fleeButton, &QPushButton::released, this, [this]() {
-        game.flee();
+        game->flee();
     });
 
 }
 
 void ApplicationMain::handle() {
-    if (this->game.isConnected()) {
+    if (this->game->isConnected()) {
         QMessageBox msgBox;
         msgBox.setText("Already Connected");
         msgBox.exec();
@@ -67,7 +68,7 @@ void ApplicationMain::handle() {
 }
 
 void ApplicationMain::listen() {
-    int status = game.requestGame("NewGame", serverAddress, "6969");
+    int status = game->requestGame("NewGame", serverAddress, "6969");
     if (status != 0) {
         QMessageBox msgBox;
         msgBox.setText("Could not connect to Game");
@@ -76,9 +77,9 @@ void ApplicationMain::listen() {
     }
 
     std::cout << "Connected." << std::endl;
-    qtBoard->updateCells();
+    qtBoard->updateCells(); // TODO: See if necessary
 
-    game.listen();
+    game->listen();
 }
 
 void ApplicationMain::OnMove(int fromX, int fromY, int toX, int toY) {
@@ -93,7 +94,13 @@ void ApplicationMain::OnOption(Option &option) {
 
 }
 
-void ApplicationMain::OnStatusUpdate(const StateMachine::State &state) {
+void ApplicationMain::OnStatusUpdate(StateMachine::State state) {
     std::cout << "State Updated: " << state << std::endl;
+
+    this->qtBoard->updateCells();
+
+    if (state == StateMachine::CHOICE_TWO) {
+        game->sendMove();
+    }
 }
 

@@ -23,7 +23,7 @@ Board::Board() : board(7) {
     for (auto &vec: board) {
         for (int j = 0; j < 7; j++) {
             bool args = isLocationValid(i, j);
-            vec.emplace_back(args);
+            vec.emplace_back(args, i, j);
         }
 
         i++;

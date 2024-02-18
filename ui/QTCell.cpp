@@ -4,7 +4,8 @@
 
 #include <QPen>
 #include "QTCell.h"
-#include<QPainter>
+#include "GameStateMachine.h"
+#include <QPainter>
 #include <QGraphicsSceneMouseEvent>
 #include <QDebug>
 
@@ -12,6 +13,14 @@ void QTCell::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QW
     Qt::GlobalColor color{Qt::white};
     if (cell.isValid()) {
         color = cell.isActive() ? Qt::red : Qt::black;
+    }
+
+
+    if (cell.isSelected()) {
+        QPen pen;
+        pen.setColor(Qt::green);
+        pen.setWidth(5);
+        painter->setPen(pen);
     }
 
     painter->setBrush(cell.isValid() ? color : Qt::white);
@@ -25,17 +34,19 @@ QRectF QTCell::boundingRect() const {
 }
 
 QTCell::QTCell(Cell &cell, QPoint pos) : cell(cell), pos(pos) {
-
 }
 
 void QTCell::mousePressEvent(QGraphicsSceneMouseEvent *event) {
     // TODO: Use Global Object to match Game Machine
     //   pos
-    if (event->button() == Qt::LeftButton) {
-        qDebug() << "Left mouse button pressed!";
-    } else if (event->button() == Qt::RightButton) {
-        qDebug() << "Right mouse button pressed!";
-    }
+//    if (event->button() == Qt::LeftButton) {
+//        qDebug() << "Left mouse button pressed!";
+//    } else if (event->button() == Qt::RightButton) {
+//        qDebug() << "Right mouse button pressed!";
+//    }
+
+    StateMachine::GameStateMachine *pStateMachine = StateMachine::GameStateMachine::getInstance();
+    pStateMachine->selectCell(&this->cell);
 
     QGraphicsItem::mousePressEvent(event);
 }
