@@ -29,7 +29,7 @@ private:
 
     StateMachine::GameStateMachine *game;
 
-    QTChat *chat;
+    QTChat *pChat;
 
 public:
     explicit ApplicationMain(QWidget *parent = Q_NULLPTR);

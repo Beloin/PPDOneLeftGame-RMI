@@ -12,12 +12,13 @@
 
 class QTChat : public QVBoxLayout {
 private:
-    QListWidget *listView;
     QLineEdit *lineEdit;
 
     void sendMessage();
 
 public:
+    QListWidget *listView;
+
     void addUserMessage(const std::string &);
 
     QTChat();

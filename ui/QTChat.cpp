@@ -10,8 +10,9 @@
 
 QTChat::QTChat() {
     listView = new QListWidget();
-    auto *itemO1 = new QListWidgetItem("Write something to your opponent!");
-    itemO1->setBackground(Qt::red);
+    auto *itemO1 = new QListWidgetItem("Write something to your opponent");
+    itemO1->setBackground(Qt::lightGray);
+    itemO1->setTextAlignment(Qt::AlignCenter);
     listView->addItem(itemO1);
 
     auto button = new QPushButton("Send");
@@ -31,17 +32,16 @@ QTChat::QTChat() {
 
 void QTChat::addUserMessage(const std::string &msg) {
     auto *message = new QListWidgetItem(QString::fromStdString(msg));
-    message->setBackground(Qt::blue);
+    message->setBackground(QColor(0x96, 0x96, 0xFF));
+    message->setTextAlignment(Qt::AlignLeft);
     listView->addItem(message);
 }
 
 void QTChat::addOpponentMessage(const std::string &msg) {
-    listView->count();
-
     auto *message = new QListWidgetItem(QString::fromStdString(msg));
-//    message->setBackground(Qt::red);
+    message->setBackground(QColor(0xFF, 0x9D, 0x96));
+    message->setTextAlignment(Qt::AlignRight);
     listView->addItem(message);
-
 }
 
 void QTChat::sendMessage() {

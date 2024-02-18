@@ -40,7 +40,8 @@ ApplicationMain::ApplicationMain(QWidget *parent) : QMainWindow(parent) {
     vbox->addItem(hbox);
 
     auto mainHorizontalBox = new QHBoxLayout();
-    mainHorizontalBox->addItem(new QTChat());
+    pChat = new QTChat();
+    mainHorizontalBox->addItem(pChat);
     mainHorizontalBox->addItem(vbox);
 
     mainWidget->setLayout(mainHorizontalBox);
@@ -94,7 +95,7 @@ void ApplicationMain::OnMove(int fromX, int fromY, int toX, int toY) {
 
 void ApplicationMain::OnMessage(std::string message) {
     std::cout << "Received Chat: " << message << std::endl;
-    chat->addOpponentMessage(message);
+    pChat->addOpponentMessage(message);
 }
 
 void ApplicationMain::OnOption(Option &option) {
