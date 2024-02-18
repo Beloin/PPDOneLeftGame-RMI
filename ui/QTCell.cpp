@@ -21,6 +21,11 @@ void QTCell::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QW
         pen.setColor(Qt::green);
         pen.setWidth(5);
         painter->setPen(pen);
+    } else {
+        QPen pen;
+        pen.setColor(Qt::white);
+        pen.setWidth(1);
+        painter->setPen(pen);
     }
 
     painter->setBrush(cell.isValid() ? color : Qt::white);
@@ -45,11 +50,12 @@ void QTCell::mousePressEvent(QGraphicsSceneMouseEvent *event) {
 //        qDebug() << "Right mouse button pressed!";
 //    }
 
+    StateMachine::GameStateMachine *pStateMachine = StateMachine::GameStateMachine::getInstance();
+
     if (!this->cell.isSelected()) {
-        StateMachine::GameStateMachine *pStateMachine = StateMachine::GameStateMachine::getInstance();
         pStateMachine->selectCell(&this->cell);
     } else {
-//        pStateMachine->unSelectCell(&this->cell)
+        pStateMachine->removeCell(&this->cell);
     }
 
     QGraphicsItem::mousePressEvent(event);

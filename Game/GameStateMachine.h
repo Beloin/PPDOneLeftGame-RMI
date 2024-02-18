@@ -84,6 +84,7 @@ namespace StateMachine {
 
         static GameStateMachine *getInstance();
 
+        bool removeCell(Cell *cell);
     };
 }
 

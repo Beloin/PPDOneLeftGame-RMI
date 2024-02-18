@@ -128,6 +128,25 @@ bool StateMachine::GameStateMachine::selectCell(Cell *cell) {
     return true;
 }
 
+bool StateMachine::GameStateMachine::removeCell(Cell *cell) {
+    if (!(currentState == MY_TURN || currentState == CHOICE_ONE || currentState == CHOICE_TWO)) return false;
+
+    if (firstCell == cell) {
+        currentState = MY_TURN;
+        firstCell->setSelected(false);
+        firstCell = nullptr;
+    }
+
+    if (secondCell == cell) {
+        currentState = CHOICE_ONE;
+        secondCell->setSelected(false);
+        secondCell = nullptr;
+    }
+
+    observer->OnStatusUpdate(currentState);
+    return true;
+}
+
 GameStateMachine *StateMachine::GameStateMachine::getInstance() {
     return _instance;
 }
