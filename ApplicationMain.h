@@ -10,7 +10,10 @@
 #include "OneLeftClient.h"
 #include "ui/QTBoard.h"
 #include "GameStateMachine.h"
+#include "ui/QTChat.h"
 #include <thread>
+#include <QListWidget>
+#include <QListWidgetItem>
 
 class ApplicationMain : public QMainWindow, public StateMachine::Observer {
 
@@ -25,6 +28,8 @@ private:
     void handle();
 
     StateMachine::GameStateMachine *game;
+
+    QTChat *chat;
 
 public:
     explicit ApplicationMain(QWidget *parent = Q_NULLPTR);

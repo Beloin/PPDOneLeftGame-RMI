@@ -8,8 +8,11 @@
 #include <QInputDialog>
 #include <QDir>
 #include <QMessageBox>
+#include <QListWidget>
+#include <QListWidgetItem>
 #include "ApplicationMain.h"
 #include "ui/QTBoard.h"
+#include "ui/QTChat.h"
 
 static ApplicationMain *onCall = nullptr;
 
@@ -29,7 +32,6 @@ ApplicationMain::ApplicationMain(QWidget *parent) : QMainWindow(parent) {
     connect(button, &QPushButton::released, this, &ApplicationMain::handle);
 
     auto mainWidget = new QWidget();
-
     auto hbox = new QHBoxLayout();
     hbox->addWidget(button);
 
@@ -37,7 +39,11 @@ ApplicationMain::ApplicationMain(QWidget *parent) : QMainWindow(parent) {
     vbox->addWidget(qtBoard);
     vbox->addItem(hbox);
 
-    mainWidget->setLayout(vbox);
+    auto mainHorizontalBox = new QHBoxLayout();
+    mainHorizontalBox->addItem(new QTChat());
+    mainHorizontalBox->addItem(vbox);
+
+    mainWidget->setLayout(mainHorizontalBox);
     setCentralWidget(mainWidget);
 
     auto fleeButton = new QPushButton{"Flee", this};
@@ -87,7 +93,7 @@ void ApplicationMain::OnMove(int fromX, int fromY, int toX, int toY) {
 }
 
 void ApplicationMain::OnMessage(std::string message) {
-
+    chat->addOpponentMessage(message);
 }
 
 void ApplicationMain::OnOption(Option &option) {

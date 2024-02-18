@@ -31,6 +31,8 @@ int StateMachine::GameStateMachine::sendChat(const std::string &msg) {
 }
 
 int StateMachine::GameStateMachine::flee() {
+    if (!isConnected()) return 1;
+
     currentState = LOST;
     observer->OnStatusUpdate(currentState);
 

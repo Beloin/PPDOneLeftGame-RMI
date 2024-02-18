@@ -1,6 +1,6 @@
 add_library(
         ui STATIC
-        QTBoard.cpp QTBoard.h QTCell.cpp QTCell.h)
+        QTBoard.cpp QTBoard.h QTCell.cpp QTCell.h QTChat.cpp QTChat.h)
 
 target_link_libraries(ui
         Qt5::Core
