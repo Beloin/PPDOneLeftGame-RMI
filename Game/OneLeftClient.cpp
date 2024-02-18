@@ -79,7 +79,7 @@ void OneLeftClient::listen() {
                 len = (((int) buffer[0]) << 8) | buffer[1];
                 status = Utils::rbytes(server_fd, (unsigned char *) buffer, len);
 
-                chatCommand = ChatCommand{std::string(buffer, len)};
+                chatCommand = ChatCommand{std::string(buffer, len-1)};
                 if (chatCallable != nullptr) chatCallable(chatCommand);
 
                 break;
@@ -125,7 +125,7 @@ int OneLeftClient::movePiece(int fromX, int fromY, int toX, int toY) {
 }
 
 int OneLeftClient::sendMessage(const std::string &msg) {
-    unsigned long length = msg.length();
+    unsigned long length = msg.length() + 1; // Add one since we need null-terminated strings
     if (length > 0xFFFF) return ClientError::INVALID_DATA;
 
     char buffer[2];
