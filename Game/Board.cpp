@@ -53,8 +53,35 @@ void Board::reset() {
     setup();
 }
 
+// 0 0 X X X 0 0
+// 0 0 X X X 0 0
+// X X X X X X X
+// X X X 0 X X X
+// X X X X X X X
+// 0 0 X X X 0 0
+// 0 0 X X X 0 0
 void Board::move(int fromX, int fromY, int toX, int toY) {
     // TODO: Add game validation here
+
+    // Example: (5, 3) -> (3, 3) : 5 - 3 = 2, 3 - 3 = 0
+    auto xDiff = fromX - toX;
+    auto yDiff = fromY - toY;
+
+    int removedX = fromX;
+    int removedY = fromY;
+    if (xDiff > 0) {
+        removedX = fromX - 1;
+    } else if (xDiff < 0) {
+        removedX = fromX + 1;
+    }
+
+    if (yDiff > 0) {
+        removedY = fromY - 1;
+    } else if (yDiff < 0) {
+        removedY = fromY + 1;
+    }
+
+    at(removedX, removedY).setActivation(false);
 
     at(fromX, fromY).toggle();
     at(toX, toY).toggle();
