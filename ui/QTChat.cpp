@@ -5,12 +5,13 @@
 #include <QAbstractButton>
 #include <QPushButton>
 #include <QLineEdit>
+#include <iostream>
 #include "QTChat.h"
 #include "GameStateMachine.h"
 
 QTChat::QTChat() {
     listView = new QListWidget();
-    auto *itemO1 = new QListWidgetItem("Write something to your opponent");
+    auto *itemO1 = new QListWidgetItem("Escreva algo para seu oponente");
     itemO1->setBackground(Qt::lightGray);
     itemO1->setTextAlignment(Qt::AlignCenter);
     listView->addItem(itemO1);

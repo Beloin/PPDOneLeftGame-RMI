@@ -5,6 +5,10 @@
 #ifndef ONE_LEFT_GAMEUTILS_H
 #define ONE_LEFT_GAMEUTILS_H
 
+#include "../Board.h"
+
 bool isLocationValid(int i, int j);
+
+bool pieceHasMovement(const Board &board, int i, int j);
 
 #endif //ONE_LEFT_GAMEUTILS_H

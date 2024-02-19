@@ -33,14 +33,16 @@ int StateMachine::GameStateMachine::sendChat(const std::string &msg) {
 int StateMachine::GameStateMachine::flee() {
     if (!isConnected()) return 1;
 
+    int status = client.flee();
+    if (status) return status;
+
     currentState = LOST;
     observer->OnStatusUpdate(currentState);
-
-    return client.flee();
 }
 
 void StateMachine::GameStateMachine::reset() {
     _board.reset();
+    disconnect();
 }
 
 bool StateMachine::GameStateMachine::isConnected() {

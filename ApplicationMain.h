@@ -14,6 +14,7 @@
 #include <thread>
 #include <QListWidget>
 #include <QListWidgetItem>
+#include <QLabel>
 
 class ApplicationMain : public QMainWindow, public StateMachine::Observer {
 
@@ -31,6 +32,8 @@ private:
 
     QTChat *pChat;
 
+    QLabel *pStatusLabel;
+
 public:
     explicit ApplicationMain(QWidget *parent = Q_NULLPTR);
 
@@ -42,6 +45,7 @@ public:
 
     void OnStatusUpdate(StateMachine::State state) override;
 
+    void updateStatusLabel(const StateMachine::State &state);
 };
 
 

@@ -24,6 +24,7 @@ void Game::setGamer(GameClient gameClient) {
 }
 
 void Game::start() {
+    // TODO: How to know when game endeded
     // TODO: Maybe we should join threads to wait for end game
     std::thread gamer01Thread{gamer01, gamer02, true};
     std::thread gamer02Thread{gamer02, gamer01, false};

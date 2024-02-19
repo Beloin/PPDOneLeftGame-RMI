@@ -15,3 +15,5 @@ bool isLocationValid(int i, int j) {
 
     return false;
 }
+
+bool pieceHasMovement(const Board &board, int i, int j){ }

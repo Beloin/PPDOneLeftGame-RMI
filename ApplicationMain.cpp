@@ -13,6 +13,7 @@
 #include "ApplicationMain.h"
 #include "ui/QTBoard.h"
 #include "ui/QTChat.h"
+#include <QLabel>
 
 static ApplicationMain *onCall = nullptr;
 
@@ -53,6 +54,10 @@ ApplicationMain::ApplicationMain(QWidget *parent) : QMainWindow(parent) {
         game->flee();
     });
 
+    pStatusLabel = new QLabel("Em Espera", qtBoard);
+    pStatusLabel->setFrameStyle(QFrame::Panel | QFrame::Box);
+    pStatusLabel->setAlignment(Qt::AlignCenter);
+    pStatusLabel->setGeometry(150, 10, 300, 30);
 }
 
 void ApplicationMain::handle() {
@@ -109,6 +114,34 @@ void ApplicationMain::OnStatusUpdate(StateMachine::State state) {
 
     if (state == StateMachine::CHOICE_TWO) {
         game->sendMove();
+    }
+
+    updateStatusLabel(state);
+}
+
+void ApplicationMain::updateStatusLabel(const StateMachine::State &state) {
+    switch (state) {
+        case StateMachine::IDLE:
+            pStatusLabel->setText("Vez do Oponente");
+            break;
+        case StateMachine::MY_TURN:
+            pStatusLabel->setText("Sua vez");
+            break;
+        case StateMachine::CHOICE_ONE:
+            pStatusLabel->setText("Escolha outra pedra");
+            break;
+        case StateMachine::WON:
+            pStatusLabel->setText("Parabéns! Ganhastes");
+            game->reset(); // TODO: Add Dialog to request another Game
+            break;
+        case StateMachine::LOST:
+            pStatusLabel->setText("Perdestes!");
+            // TODO: Add Dialog to request another Game, since this could break flee option
+            game->reset();
+            break;
+        default:
+            pStatusLabel->setText("Em espera");
+            break;
     }
 }
 
