@@ -58,6 +58,14 @@ ApplicationMain::ApplicationMain(QWidget *parent) : QMainWindow(parent) {
     pStatusLabel->setFrameStyle(QFrame::Panel | QFrame::Box);
     pStatusLabel->setAlignment(Qt::AlignCenter);
     pStatusLabel->setGeometry(150, 10, 300, 30);
+
+    // TODO: What is missin?
+    //  1. Game end, check for each piece if can be moved, if not, the current turn user has lost
+    //  2. Add game name choice
+    //  3. Game movement validation
+    //  4. Add remove game when it has finished
+    //  5. Add when game is finished call again
+    //  6. Better UI
 }
 
 void ApplicationMain::handle() {
