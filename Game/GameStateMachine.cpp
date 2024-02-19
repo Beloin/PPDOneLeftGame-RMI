@@ -38,6 +38,8 @@ int StateMachine::GameStateMachine::flee() {
 
     currentState = LOST;
     observer->OnStatusUpdate(currentState);
+
+    return 0;
 }
 
 void StateMachine::GameStateMachine::reset() {
