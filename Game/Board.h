@@ -19,7 +19,7 @@ public:
 //    explicit Board(int size);
     explicit Board();
 
-    Cell &at(int i, int j);
+    Cell &at(int i, int j) ;
 
     int size();
 
@@ -28,6 +28,8 @@ public:
     void setup();
 
     void move(int i, int i1, int i2, int i3);
+
+    void isPlayableYet();
 };
 
 

@@ -86,3 +86,14 @@ void Board::move(int fromX, int fromY, int toX, int toY) {
     at(fromX, fromY).toggle();
     at(toX, toY).toggle();
 }
+
+void Board::isPlayableYet() {
+    for (int i = 0; i < 7; ++i) {
+        for (int j = 0; j < 7; j++) {
+            Cell &cell = at(i, j);
+
+            if (cell.isValid() && cell.isActive())
+                pieceHasMovement();
+        }
+    }
+}

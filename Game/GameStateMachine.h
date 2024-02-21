@@ -58,6 +58,8 @@ namespace StateMachine {
 
         GameStateMachine();
 
+        void validateBoard();
+
     public:
 
         int requestGame(const std::string &game, const std::string &host, const std::string &port);

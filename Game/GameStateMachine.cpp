@@ -175,6 +175,10 @@ bool StateMachine::GameStateMachine::sendMove() {
     return true;
 }
 
+void StateMachine::GameStateMachine::validateBoard() {
+
+}
+
 
 
 

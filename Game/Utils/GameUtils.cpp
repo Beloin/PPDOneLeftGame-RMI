@@ -25,36 +25,62 @@ bool isLocationValid(int i, int j) {
 // 0 0 X X X 0 0
 // 0 0 X X X 0 0
 // Y↑ X➔
-bool pieceHasMovement(const Board &board, int i, int j) {
-    std::pair upperCenter{i, j + 1};
-    std::pair upperLeft{i - 1, j + 1};
-    std::pair upperRight{i + 1, j + 1};
+bool pieceHasMovement(Board &board, int i, int j) {
+    CellSurround movement = board.at(i, j).getSurround();
+    if (movement == NONE) return false;
 
-    std::pair left{i - 1, j};
-    std::pair right{i + 1, j};
+    if (movement & UPPER_CENTER) {
+        int x = i;
+        int y = j + 1;
+        CellSurround upperSurround = board.at(x, y).getSurround();
 
-    std::pair lowerCenter{i, j - 1};
-    std::pair lowerLeft{i - 1, j - 1};
-    std::pair lowerRight{i + 1, j - 1};
+        if (upperSurround & UPPER_CENTER) {
+            Cell &upperCell = board.at(x, y + 1);
+            if (upperCell.isValid() && !upperCell.isActive())
+                return true;
+        }
+    }
 
-    // 0x1_1_1_1_1_1_1_1:
-    // 1 2 3
-    // 4 0 5
-    // 6 7 8
-    char movement = -1;
-    if (upperLeft.first <= 0 || upperLeft.second >= 7) return false;
-    if (upperCenter.second >= 7) return false;
-    if (upperRight.first >= 7 || upperLeft.second >= 7) return false;
+    if (movement & LEFT) {
+        int x = i - 1;
+        int y = j;
+        CellSurround upperSurround = board.at(x, y).getSurround();
 
-    if (left.first <= 0) return false;
-    if (right.first >= 7) return false;
+        // Cell needs to be "empty" and valid
+        if (upperSurround & LEFT) {
+            Cell &upperCell = board.at(x - 1, y);
+            if (upperCell.isValid() && !upperCell.isActive())
+                return true;
+        }
+    }
 
-    if (lowerLeft.first <= 0 || lowerLeft.second <= 0) return false;
-    if (lowerCenter.second <= 0) return false;
-    if (lowerRight.first >= 7 || lowerRight.second <= 0) return false;
+    if (movement & RIGHT) {
+        int x = i + 1;
+        int y = j;
+        CellSurround upperSurround = board.at(x, y).getSurround();
 
+        // Cell needs to be "empty" and valid
+        if (upperSurround & RIGHT) {
+            Cell &upperCell = board.at(x + 1, y);
+            if (upperCell.isValid() && !upperCell.isActive())
+                return true;
+        }
+    }
 
-    return true;
+    if (movement & LOWER_CENTER) {
+        int x = i;
+        int y = j - 1;
+        CellSurround upperSurround = board.at(x, y).getSurround();
+
+        // Cell needs to be "empty" and valid
+        if (upperSurround & LOWER_CENTER) {
+            Cell &upperCell = board.at(x, y - 1);
+            if (upperCell.isValid() && !upperCell.isActive())
+                return true;
+        }
+    }
+
+    return false;
 }
 
 bool isMovementValid(const Board &board, int fromX, int fromY, int toX, int toY) {}
