@@ -20,6 +20,7 @@
 bool isLocationValid(int i, int j);
 
 bool pieceHasMovement(Board &board, int i, int j);
+bool pieceHasMovement(Board &board, Cell &cell);
 
 bool isMovementValid(const Board &board, int fromX, int fromY, int toX, int toY);
 

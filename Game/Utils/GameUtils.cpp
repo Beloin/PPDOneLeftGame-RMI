@@ -24,9 +24,14 @@ bool isLocationValid(int i, int j) {
 // X X X X X X X
 // 0 0 X X X 0 0
 // 0 0 X X X 0 0
-// Y↑ X➔
+// Y X←?
+// TODO: WTF? Why X is coming through RIGHT->LEFT
+// TODO: WTF? Why Y is coming through BOOTOM->TOP
 bool pieceHasMovement(Board &board, int i, int j) {
-    CellSurround movement = board.at(i, j).getSurround();
+    Cell &cell = board.at(i, j);
+    if (!cell.isValid()) return false;
+
+    CellSurround movement = cell.getSurround();
     if (movement == NONE) return false;
 
     if (movement & UPPER_CENTER) {

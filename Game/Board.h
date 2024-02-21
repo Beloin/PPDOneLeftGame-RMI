@@ -21,6 +21,9 @@ public:
 
     Cell &at(int i, int j) ;
 
+    bool hasMovement(int i, int j) ;
+    bool hasMovement(Cell&) ;
+
     int size();
 
     void reset();
@@ -29,7 +32,7 @@ public:
 
     void move(int i, int i1, int i2, int i3);
 
-    void isPlayableYet();
+    bool isPlayableYet();
 };
 
 

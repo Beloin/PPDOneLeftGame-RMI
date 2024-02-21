@@ -2,6 +2,7 @@
 // Created by beloin on 13/02/24.
 //
 
+#include <iostream>
 #include "GameStateMachine.h"
 
 using StateMachine::GameStateMachine;
@@ -80,6 +81,11 @@ void StateMachine::GameStateMachine::gameCallable(const RawCommand &command) {
     myTurn = true;
     currentState = MY_TURN;
     observer->OnStatusUpdate(currentState);
+
+    if (!validateBoard()) {
+        currentState = LOST;
+        observer->OnStatusUpdate(currentState);
+    }
 }
 
 void StateMachine::GameStateMachine::chatCallable(const RawCommand &command) {
@@ -115,7 +121,15 @@ void StateMachine::GameStateMachine::disconnect() {
 bool StateMachine::GameStateMachine::selectCell(Cell *cell) {
     if (currentState != MY_TURN && currentState != CHOICE_ONE) return false;
 
+    if (currentState == myTurn) {
+        bool hasMovement = board().hasMovement(*cell);
+        if (!hasMovement) return false;
+    }
+
+    std::cout << "Cell { " << cell->x() << ", " << cell->y() << " }" << std::endl;
     if (currentState == CHOICE_ONE) {
+        if (cell->isActive()) return false;
+
         secondCell = cell;
         secondCell->setSelected(true);
         currentState = State::CHOICE_TWO;
@@ -169,14 +183,18 @@ bool StateMachine::GameStateMachine::sendMove() {
     secondCell = nullptr;
 
     currentState = IDLE;
-
     observer->OnStatusUpdate(currentState);
+
+    if (!validateBoard()) {
+        currentState = WON;
+        observer->OnStatusUpdate(currentState);
+    }
 
     return true;
 }
 
-void StateMachine::GameStateMachine::validateBoard() {
-
+bool StateMachine::GameStateMachine::validateBoard() {
+    return board().isPlayableYet();
 }
 
 

@@ -58,7 +58,7 @@ namespace StateMachine {
 
         GameStateMachine();
 
-        void validateBoard();
+        bool validateBoard();
 
     public:
 

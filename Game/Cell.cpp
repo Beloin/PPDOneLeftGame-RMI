@@ -29,6 +29,14 @@ bool Cell::isSelected() {
     return selected;
 }
 
+// 0 0 X X X 0 0
+// 0 0 X X X 0 0
+// X X X X X X X
+// X X X 0 X X X
+// X X X X X X X
+// 0 0 X X X 0 0
+// 0 0 X X X 0 0
+// Y↑ X←
 CellSurround Cell::getSurround() {
     std::pair upperLeft{_x - 1, _y + 1};
     std::pair upperCenter{_x, _y + 1};
