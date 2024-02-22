@@ -49,6 +49,10 @@ void StateMachine::GameStateMachine::reset() {
     disconnect();
 }
 
+void StateMachine::GameStateMachine::resetBoard() {
+    _board.reset();
+}
+
 bool StateMachine::GameStateMachine::isConnected() {
     return client.isConnected();
 }
@@ -195,6 +199,10 @@ bool StateMachine::GameStateMachine::sendMove() {
 
 bool StateMachine::GameStateMachine::isBoardPlayable() {
     return board().isPlayableYet();
+}
+
+StateMachine::State StateMachine::GameStateMachine::getState() {
+    return currentState;
 }
 
 

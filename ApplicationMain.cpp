@@ -69,13 +69,20 @@ ApplicationMain::ApplicationMain(QWidget *parent) : QMainWindow(parent) {
 }
 
 void ApplicationMain::handle() {
-    if (this->game->isConnected()) {
+    bool gameHasEnded = game->getState() == StateMachine::WON || game->getState() == StateMachine::LOST;
+    if (this->game->isConnected() && !gameHasEnded) {
         QMessageBox msgBox;
         msgBox.setText("Já conectado!");
         msgBox.exec();
         return;
+    } else {
+        if (gameHasEnded) {
+            this->game->disconnect();
+        }
     }
 
+    // TODO: Get  game name too:
+    //  https://stackoverflow.com/questions/17512542/getting-multiple-inputs-from-qinputdialog-in-qt
     bool ok;
     const QString &serverName = QInputDialog::getText(this, tr("Endereço do Servidor"),
                                                       tr("Servidor"), QLineEdit::Normal, "localhost", &ok);
@@ -96,6 +103,7 @@ void ApplicationMain::listen() {
         return;
     }
 
+    game->resetBoard();
     std::cout << "Connected." << std::endl;
     qtBoard->updateCells(); // TODO: See if necessary
 
@@ -140,13 +148,9 @@ void ApplicationMain::updateStatusLabel(const StateMachine::State &state) {
             break;
         case StateMachine::WON:
             pStatusLabel->setText("Parabéns! Ganhastes");
-//            game->reset(); // TODO: Add Dialog to request another Game
-            game->disconnect();
             break;
         case StateMachine::LOST:
             pStatusLabel->setText("Perdestes!");
-//            game->reset(); // TODO: Add Dialog to request another Game
-            game->disconnect();
             break;
         default:
             pStatusLabel->setText("Em espera");

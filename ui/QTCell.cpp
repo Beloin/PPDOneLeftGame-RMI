@@ -52,7 +52,7 @@ void QTCell::mousePressEvent(QGraphicsSceneMouseEvent *event) {
 //    }
 
     StateMachine::GameStateMachine *pStateMachine = StateMachine::GameStateMachine::getInstance();
-    std::cout << "Cell { " << this->cell.x() << ", " << cell.y() << " }" << std::endl;
+//    std::cout << "Cell { " << this->cell.x() << ", " << cell.y() << " }" << std::endl;
 
     if (!this->cell.isSelected()) {
         pStateMachine->selectCell(&this->cell);

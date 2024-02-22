@@ -75,6 +75,7 @@ namespace StateMachine {
         int flee();
 
         void reset();
+        void resetBoard();
 
         void disconnect();
 
@@ -87,6 +88,8 @@ namespace StateMachine {
         static GameStateMachine *getInstance();
 
         bool removeCell(Cell *cell);
+
+        State getState();
     };
 }
 
