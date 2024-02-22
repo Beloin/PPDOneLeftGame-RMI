@@ -2,6 +2,7 @@
 // Created by beloin on 12/02/24.
 //
 
+#include <random>
 #include "GameUtils.h"
 
 bool isLocationValid(int i, int j) {
@@ -106,6 +107,9 @@ bool pieceHasMovement(Board &board, int i, int j) {
 
 bool isMovementValid(const Board &board, int fromX, int fromY, int toX, int toY) {}
 
+std::random_device dev;
+std::mt19937 rng(dev());
+
 std::string getRandomString(int len) {
     static const char alphanum[] =
             "0123456789"
@@ -114,9 +118,10 @@ std::string getRandomString(int len) {
     std::string tmp_s;
     tmp_s.reserve(len);
 
-    srand(NULL);
+
+    std::uniform_int_distribution<std::mt19937::result_type> dist6(1, sizeof(alphanum) - 1);
     for (int i = 0; i < len; ++i) {
-        tmp_s += alphanum[rand() % (sizeof(alphanum) - 1)];
+        tmp_s += alphanum[dist6(rng)];
     }
 
     return tmp_s;

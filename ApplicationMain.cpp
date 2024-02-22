@@ -87,12 +87,6 @@ void ApplicationMain::handle() {
 
     auto ok2 = connectionDialog();
 
-    // TODO: Get  game name too:
-    //  https://stackoverflow.com/questions/17512542/getting-multiple-inputs-from-qinputdialog-in-qt
-//    bool ok;
-//    const QString &serverName = QInputDialog::getText(this, tr("Endereço do Servidor"),
-//                                                      tr("Servidor"), QLineEdit::Normal, "localhost", &ok);
-
     if (ok2) {
         clientListen = std::thread{&ApplicationMain::listen, this};
         clientListen.detach();
@@ -100,11 +94,6 @@ void ApplicationMain::handle() {
 }
 
 void ApplicationMain::listen() {
-//    std::ostringstream osstr0;
-//    osstr0 << "Game#" << getRandomString(
-//            5); // TODO: Horrible random generator... Please chose a new one, to be honest, is better no entender name
-//    gameRoom = osstr0.str();
-
     std::ostringstream osstr;
     osstr << "Esperando em \"" << gameRoom << "\"";
     pStatusLabel->setText(QString::fromStdString(osstr.str()));
@@ -184,9 +173,11 @@ bool ApplicationMain::connectionDialog() {
     serverAddressField->setText("localhost");
     form.addRow(serverAddressField);
 
+    std::ostringstream osstr0;
+    osstr0 << "Game#" << getRandomString(5);
     form.addRow(new QLabel("Nome da Sala:"));
     auto *roomName = new QLineEdit(&dialog);
-    roomName->setText("GameRoom");
+    roomName->setText(QString::fromStdString(osstr0.str()));
     form.addRow(roomName);
 
     QDialogButtonBox buttonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel,
