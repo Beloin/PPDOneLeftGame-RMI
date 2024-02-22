@@ -17,7 +17,7 @@ class Board {
 public:
 
 //    explicit Board(int size);
-    explicit Board();
+    Board();
 
     Cell &at(int i, int j) ;
 

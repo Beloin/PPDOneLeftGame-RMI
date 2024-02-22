@@ -54,7 +54,7 @@ ApplicationMain::ApplicationMain(QWidget *parent) : QMainWindow(parent) {
         game->flee();
     });
 
-    pStatusLabel = new QLabel("Em Espera", qtBoard);
+    pStatusLabel = new QLabel("Se conecte ao servidor", qtBoard);
     pStatusLabel->setFrameStyle(QFrame::Panel | QFrame::Box);
     pStatusLabel->setAlignment(Qt::AlignCenter);
     pStatusLabel->setGeometry(150, 10, 300, 30);
@@ -71,7 +71,7 @@ ApplicationMain::ApplicationMain(QWidget *parent) : QMainWindow(parent) {
 void ApplicationMain::handle() {
     if (this->game->isConnected()) {
         QMessageBox msgBox;
-        msgBox.setText("Already Connected");
+        msgBox.setText("Já conectado!");
         msgBox.exec();
         return;
     }
@@ -140,12 +140,13 @@ void ApplicationMain::updateStatusLabel(const StateMachine::State &state) {
             break;
         case StateMachine::WON:
             pStatusLabel->setText("Parabéns! Ganhastes");
-            game->reset(); // TODO: Add Dialog to request another Game
+//            game->reset(); // TODO: Add Dialog to request another Game
+            game->disconnect();
             break;
         case StateMachine::LOST:
             pStatusLabel->setText("Perdestes!");
-            // TODO: Add Dialog to request another Game, since this could break flee option
-            game->reset();
+//            game->reset(); // TODO: Add Dialog to request another Game
+            game->disconnect();
             break;
         default:
             pStatusLabel->setText("Em espera");

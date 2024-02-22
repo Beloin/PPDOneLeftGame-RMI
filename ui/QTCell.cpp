@@ -8,6 +8,7 @@
 #include <QPainter>
 #include <QGraphicsSceneMouseEvent>
 #include <QDebug>
+#include <iostream>
 
 void QTCell::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
     Qt::GlobalColor color{Qt::white};
@@ -51,6 +52,7 @@ void QTCell::mousePressEvent(QGraphicsSceneMouseEvent *event) {
 //    }
 
     StateMachine::GameStateMachine *pStateMachine = StateMachine::GameStateMachine::getInstance();
+    std::cout << "Cell { " << this->cell.x() << ", " << cell.y() << " }" << std::endl;
 
     if (!this->cell.isSelected()) {
         pStateMachine->selectCell(&this->cell);

@@ -19,6 +19,7 @@ int GameStateMachine::requestGame(
     myTurn = client.isStartTurn;
     currentState = myTurn ? MY_TURN : IDLE;
     observer->OnStatusUpdate(currentState);
+    board().reset();
 
     return 0;
 }
@@ -82,7 +83,7 @@ void StateMachine::GameStateMachine::gameCallable(const RawCommand &command) {
     currentState = MY_TURN;
     observer->OnStatusUpdate(currentState);
 
-    if (!validateBoard()) {
+    if (!isBoardPlayable()) {
         currentState = LOST;
         observer->OnStatusUpdate(currentState);
     }
@@ -119,14 +120,13 @@ void StateMachine::GameStateMachine::disconnect() {
 
 // TODO: Remove selection
 bool StateMachine::GameStateMachine::selectCell(Cell *cell) {
-    if (currentState != MY_TURN && currentState != CHOICE_ONE) return false;
+    if ((currentState != MY_TURN && currentState != CHOICE_ONE) || !cell->isValid()) return false;
 
-    if (currentState == myTurn) {
+    if (currentState == MY_TURN) {
         bool hasMovement = board().hasMovement(*cell);
         if (!hasMovement) return false;
     }
 
-    std::cout << "Cell { " << cell->x() << ", " << cell->y() << " }" << std::endl;
     if (currentState == CHOICE_ONE) {
         if (cell->isActive()) return false;
 
@@ -185,7 +185,7 @@ bool StateMachine::GameStateMachine::sendMove() {
     currentState = IDLE;
     observer->OnStatusUpdate(currentState);
 
-    if (!validateBoard()) {
+    if (!isBoardPlayable()) {
         currentState = WON;
         observer->OnStatusUpdate(currentState);
     }
@@ -193,7 +193,7 @@ bool StateMachine::GameStateMachine::sendMove() {
     return true;
 }
 
-bool StateMachine::GameStateMachine::validateBoard() {
+bool StateMachine::GameStateMachine::isBoardPlayable() {
     return board().isPlayableYet();
 }
 

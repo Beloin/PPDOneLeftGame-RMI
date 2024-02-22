@@ -58,7 +58,7 @@ namespace StateMachine {
 
         GameStateMachine();
 
-        bool validateBoard();
+        bool isBoardPlayable();
 
     public:
 
