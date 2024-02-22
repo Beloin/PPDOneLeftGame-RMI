@@ -105,3 +105,19 @@ bool pieceHasMovement(Board &board, int i, int j) {
 }
 
 bool isMovementValid(const Board &board, int fromX, int fromY, int toX, int toY) {}
+
+std::string getRandomString(int len) {
+    static const char alphanum[] =
+            "0123456789"
+            "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+            "abcdefghijklmnopqrstuvwxyz";
+    std::string tmp_s;
+    tmp_s.reserve(len);
+
+    srand(NULL);
+    for (int i = 0; i < len; ++i) {
+        tmp_s += alphanum[rand() % (sizeof(alphanum) - 1)];
+    }
+
+    return tmp_s;
+}

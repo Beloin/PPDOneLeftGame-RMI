@@ -24,4 +24,11 @@ bool pieceHasMovement(Board &board, Cell &cell);
 
 bool isMovementValid(const Board &board, int fromX, int fromY, int toX, int toY);
 
+#include <ctime>
+#include <iostream>
+#include <unistd.h>
+
+std::string getRandomString(int len);
+
+
 #endif //ONE_LEFT_GAMEUTILS_H

@@ -21,6 +21,7 @@ class ApplicationMain : public QMainWindow, public StateMachine::Observer {
 private:
     std::thread clientListen;
 
+    std::string gameRoom{};
     std::string serverAddress{};
     QTBoard *qtBoard;
 
@@ -33,6 +34,8 @@ private:
     QTChat *pChat;
 
     QLabel *pStatusLabel;
+
+    bool connectionDialog();
 
 public:
     explicit ApplicationMain(QWidget *parent = Q_NULLPTR);

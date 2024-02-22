@@ -13,7 +13,11 @@
 #include "ApplicationMain.h"
 #include "ui/QTBoard.h"
 #include "ui/QTChat.h"
+#include "Utils/GameUtils.h"
 #include <QLabel>
+#include <sstream>
+#include <QFormLayout>
+#include <QDialogButtonBox>
 
 static ApplicationMain *onCall = nullptr;
 
@@ -81,31 +85,43 @@ void ApplicationMain::handle() {
         }
     }
 
+    auto ok2 = connectionDialog();
+
     // TODO: Get  game name too:
     //  https://stackoverflow.com/questions/17512542/getting-multiple-inputs-from-qinputdialog-in-qt
-    bool ok;
-    const QString &serverName = QInputDialog::getText(this, tr("Endereço do Servidor"),
-                                                      tr("Servidor"), QLineEdit::Normal, "localhost", &ok);
+//    bool ok;
+//    const QString &serverName = QInputDialog::getText(this, tr("Endereço do Servidor"),
+//                                                      tr("Servidor"), QLineEdit::Normal, "localhost", &ok);
 
-    if (ok && !serverName.isEmpty()) {
-        serverAddress = serverName.toStdString();
+    if (ok2) {
         clientListen = std::thread{&ApplicationMain::listen, this};
         clientListen.detach();
     }
 }
 
 void ApplicationMain::listen() {
-    int status = game->requestGame("NewGame", serverAddress, "6969");
+//    std::ostringstream osstr0;
+//    osstr0 << "Game#" << getRandomString(
+//            5); // TODO: Horrible random generator... Please chose a new one, to be honest, is better no entender name
+//    gameRoom = osstr0.str();
+
+    std::ostringstream osstr;
+    osstr << "Esperando em \"" << gameRoom << "\"";
+    pStatusLabel->setText(QString::fromStdString(osstr.str()));
+
+    int status = game->requestGame(gameRoom, serverAddress, "6969");
     if (status != 0) {
         QMessageBox msgBox;
-        msgBox.setText("Could not connect to Game");
+        msgBox.setText("Não foi possível se conectar");
         msgBox.exec();
+
+        pStatusLabel->setText("Tente novamente");
         return;
     }
 
     game->resetBoard();
     std::cout << "Connected." << std::endl;
-    qtBoard->updateCells(); // TODO: See if necessary
+    qtBoard->updateCells();
 
     game->listen();
 }
@@ -156,5 +172,38 @@ void ApplicationMain::updateStatusLabel(const StateMachine::State &state) {
             pStatusLabel->setText("Em espera");
             break;
     }
+}
+
+bool ApplicationMain::connectionDialog() {
+    QDialog dialog(this);
+    QFormLayout form(&dialog);
+
+    form.addRow(new QLabel("End. do Servidor:"));
+
+    auto *serverAddressField = new QLineEdit(&dialog);
+    serverAddressField->setText("localhost");
+    form.addRow(serverAddressField);
+
+    form.addRow(new QLabel("Nome da Sala:"));
+    auto *roomName = new QLineEdit(&dialog);
+    roomName->setText("GameRoom");
+    form.addRow(roomName);
+
+    QDialogButtonBox buttonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel,
+                               Qt::Horizontal, &dialog);
+    form.addRow(&buttonBox);
+
+    QObject::connect(&buttonBox, SIGNAL(accepted()), &dialog, SLOT(accept()));
+    QObject::connect(&buttonBox, SIGNAL(rejected()), &dialog, SLOT(reject()));
+
+    if (dialog.exec() == QDialog::Accepted) {
+        if (roomName->text().isEmpty() || serverAddressField->text().isEmpty()) { return false; }
+
+        gameRoom = roomName->text().toStdString();
+        serverAddress = serverAddressField->text().toStdString();
+        return true;
+    }
+
+    return false;
 }
 
