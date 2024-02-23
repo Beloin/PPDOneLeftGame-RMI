@@ -83,16 +83,15 @@ ApplicationMain::ApplicationMain(QWidget *parent) : QMainWindow(parent) {
 }
 
 void ApplicationMain::handle() {
-    bool gameHasEnded = game->getState() == StateMachine::WON || game->getState() == StateMachine::LOST;
+    bool gameHasEnded = game->getState() == StateMachine::WON || game->getState() == StateMachine::LOST ||
+                        game->getState() == StateMachine::DRAW || game->getState() == StateMachine::NOT_STARTED;
     if (this->game->isConnected() && !gameHasEnded) {
         QMessageBox msgBox;
         msgBox.setText("Já conectado!");
         msgBox.exec();
         return;
     } else {
-        if (gameHasEnded) {
-            this->game->disconnect();
-        }
+        game->disconnect();
     }
 
     auto ok2 = connectionDialog();
@@ -164,12 +163,18 @@ void ApplicationMain::updateStatusLabel(const StateMachine::State &state) {
             break;
         case StateMachine::WON:
             pStatusLabel->setText("Parabéns! Ganhastes");
+            game->disconnect();
             break;
         case StateMachine::LOST:
             pStatusLabel->setText("Perdestes!");
+            game->disconnect();
             break;
         case StateMachine::NOT_STARTED:
             pStatusLabel->setText("Fim do jogo.");
+            break;
+        case StateMachine::DRAW:
+            pStatusLabel->setText("Empate!");
+            game->disconnect();
             break;
         default:
             pStatusLabel->setText("Em espera");

@@ -86,6 +86,12 @@ void StateMachine::GameStateMachine::gameCallable(const RawCommand &command) {
     currentState = MY_TURN;
     observer->OnStatusUpdate(currentState);
 
+    if (pieceCount() == 1) {
+        currentState = DRAW;
+        observer->OnStatusUpdate(currentState);
+        return;
+    }
+
     if (!isBoardPlayable()) {
         currentState = LOST;
         observer->OnStatusUpdate(currentState);
@@ -118,7 +124,7 @@ Board &StateMachine::GameStateMachine::board() {
 }
 
 void StateMachine::GameStateMachine::disconnect() {
-    if (currentState != NOT_STARTED) { flee(); }
+    if (currentState != NOT_STARTED && currentState != WON && currentState != LOST && currentState != DRAW) { flee(); }
     client.closeConnection();
 
     currentState = NOT_STARTED;
@@ -191,6 +197,13 @@ bool StateMachine::GameStateMachine::sendMove() {
     currentState = IDLE;
     observer->OnStatusUpdate(currentState);
 
+    if (pieceCount() == 1) {
+        currentState = DRAW;
+        observer->OnStatusUpdate(currentState);
+
+        return true;
+    }
+
     if (!isBoardPlayable()) {
         currentState = WON;
         observer->OnStatusUpdate(currentState);
@@ -206,6 +219,23 @@ bool StateMachine::GameStateMachine::isBoardPlayable() {
 StateMachine::State StateMachine::GameStateMachine::getState() {
     return currentState;
 }
+
+int StateMachine::GameStateMachine::pieceCount() {
+    int total = 0;
+    for (int i = 0; i < 7; ++i) {
+        for (int j = 0; j < 7; j++) {
+            Cell &cell = this->_board.at(i, j);
+
+            if (cell.isValid() && cell.isActive()) {
+                total++;
+            }
+
+        }
+    }
+
+    return total;
+}
+
 
 
 

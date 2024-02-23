@@ -19,7 +19,7 @@ namespace StateMachine {
         CHOICE_ONE = 3,
         CHOICE_TWO = 4,
         CHAT = 5,
-        OPTION = 6,
+        DRAW = 6,
         LOST = 7,
         WON = 8
     };
@@ -60,6 +60,8 @@ namespace StateMachine {
 
         bool isBoardPlayable();
 
+        int pieceCount();
+
     public:
 
         int requestGame(const std::string &game, const std::string &host, const std::string &port);
@@ -75,6 +77,7 @@ namespace StateMachine {
         int flee();
 
         void reset();
+
         void resetBoard();
 
         void disconnect();
