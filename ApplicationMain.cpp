@@ -18,6 +18,8 @@
 #include <sstream>
 #include <QFormLayout>
 #include <QDialogButtonBox>
+#include <format>
+#include <iomanip>
 
 static ApplicationMain *onCall = nullptr;
 
@@ -52,10 +54,18 @@ ApplicationMain::ApplicationMain(QWidget *parent) : QMainWindow(parent) {
     mainWidget->setLayout(mainHorizontalBox);
     setCentralWidget(mainWidget);
 
-    auto fleeButton = new QPushButton{"Flee", this};
+    auto fleeButton = new QPushButton{"Desistir", this};
     fleeButton->setLayoutDirection(Qt::RightToLeft);
     connect(fleeButton, &QPushButton::released, this, [this]() {
         game->flee();
+    });
+
+    auto disconnectButton = new QPushButton{"Desconectar", this};
+    const QRect &currentGeometry = disconnectButton->geometry();
+    disconnectButton->setGeometry(0, 30, currentGeometry.width(), currentGeometry.height());
+    fleeButton->setLayoutDirection(Qt::RightToLeft);
+    connect(disconnectButton, &QPushButton::released, this, [this]() {
+        game->disconnect(); // TODO: Disconnection is weird acting
     });
 
     pStatusLabel = new QLabel("Se conecte ao servidor", qtBoard);
@@ -116,7 +126,8 @@ void ApplicationMain::listen() {
 }
 
 void ApplicationMain::OnMove(int fromX, int fromY, int toX, int toY) {
-    qtBoard->updateCells();
+    this->update();
+    this->qtBoard->updateCells();
 }
 
 void ApplicationMain::OnMessage(std::string message) {
@@ -125,12 +136,12 @@ void ApplicationMain::OnMessage(std::string message) {
 }
 
 void ApplicationMain::OnOption(Option &option) {
-
+    std::cout << "Opponent Gave Up!" << std::endl;
+    pStatusLabel->setText("Parabéns! Ganhastes");
 }
 
 void ApplicationMain::OnStatusUpdate(StateMachine::State state) {
-    std::cout << "State Updated: " << state << std::endl;
-
+    std::cout << "State Updated: {" << state << "} " << getTimestamp() << std::endl;
     this->qtBoard->updateCells();
 
     if (state == StateMachine::CHOICE_TWO) {
@@ -157,10 +168,15 @@ void ApplicationMain::updateStatusLabel(const StateMachine::State &state) {
         case StateMachine::LOST:
             pStatusLabel->setText("Perdestes!");
             break;
+        case StateMachine::NOT_STARTED:
+            pStatusLabel->setText("Fim do jogo.");
+            break;
         default:
             pStatusLabel->setText("Em espera");
             break;
     }
+
+    this->update();
 }
 
 bool ApplicationMain::connectionDialog() {

@@ -76,3 +76,9 @@ bool Network::Client::IsConnected() const {
     return hasConnected;
 }
 
+void Network::Client::disconnect() {
+    hasConnected = false;
+    close(server_fd);
+    server_fd = -1;
+}
+

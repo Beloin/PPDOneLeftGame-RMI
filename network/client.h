@@ -25,6 +25,8 @@ namespace Network {
         [[nodiscard]] bool IsConnected() const;
 
         virtual ~Client();
+
+        void disconnect();
     };
 
 }

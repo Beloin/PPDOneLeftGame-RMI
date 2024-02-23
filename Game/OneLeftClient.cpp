@@ -79,7 +79,7 @@ void OneLeftClient::listen() {
                 len = (((int) buffer[0]) << 8) | buffer[1];
                 status = Utils::rbytes(server_fd, (unsigned char *) buffer, len);
 
-                chatCommand = ChatCommand{std::string(buffer, len-1)};
+                chatCommand = ChatCommand{std::string(buffer, len - 1)};
                 if (chatCallable != nullptr) chatCallable(chatCommand);
 
                 break;
@@ -156,9 +156,8 @@ int OneLeftClient::sendMessage(const std::string &msg) {
 }
 
 void OneLeftClient::closeConnection() {
-    hasConnected = false;
     _isConnected = false;
-    close(server_fd);
+    this->disconnect();
 }
 
 int OneLeftClient::flee() {

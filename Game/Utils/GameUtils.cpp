@@ -3,6 +3,9 @@
 //
 
 #include <random>
+#include <chrono>
+#include <iomanip>
+#include <sstream>
 #include "GameUtils.h"
 
 bool isLocationValid(int i, int j) {
@@ -125,4 +128,18 @@ std::string getRandomString(int len) {
     }
 
     return tmp_s;
+}
+
+std::string getTimestamp() {
+// get a precise timestamp as a string
+    const auto now = std::chrono::system_clock::now();
+    const auto nowAsTimeT = std::chrono::system_clock::to_time_t(now);
+    const auto nowMs = std::chrono::duration_cast<std::chrono::milliseconds>(
+            now.time_since_epoch()) % 1000;
+    std::stringstream nowSs;
+    nowSs << std::put_time(std::localtime(&nowAsTimeT), "%a %b %d %Y %T")
+          << '.' << std::setfill('0') << std::setw(3)
+          << nowMs.count();
+
+    return nowSs.str();
 }

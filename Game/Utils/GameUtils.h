@@ -30,5 +30,6 @@ bool isMovementValid(const Board &board, int fromX, int fromY, int toX, int toY)
 
 std::string getRandomString(int len);
 
+std::string getTimestamp();
 
 #endif //ONE_LEFT_GAMEUTILS_H

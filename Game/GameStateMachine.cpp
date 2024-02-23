@@ -58,7 +58,7 @@ bool StateMachine::GameStateMachine::isConnected() {
 }
 
 StateMachine::GameStateMachine::GameStateMachine() {
-    self = this; // TODO: Use instance instead of this
+    self = this;
     client.bindCallable(CommandType::GAME, [](const RawCommand &command) {
         self->gameCallable(command);
     });
@@ -78,7 +78,6 @@ void StateMachine::GameStateMachine::gameCallable(const RawCommand &command) {
     int toX = game->toX;
     int toY = game->toY;
 
-    // TODO: Add game validation
     _board.move(fromX, fromY, toX, toY);
 
     observer->OnMove(fromX, fromY, toX, toY);
@@ -119,10 +118,13 @@ Board &StateMachine::GameStateMachine::board() {
 }
 
 void StateMachine::GameStateMachine::disconnect() {
+    if (currentState != NOT_STARTED) { flee(); }
     client.closeConnection();
+
+    currentState = NOT_STARTED;
+    observer->OnStatusUpdate(currentState);
 }
 
-// TODO: Remove selection
 bool StateMachine::GameStateMachine::selectCell(Cell *cell) {
     if ((currentState != MY_TURN && currentState != CHOICE_ONE) || !cell->isValid()) return false;
 
