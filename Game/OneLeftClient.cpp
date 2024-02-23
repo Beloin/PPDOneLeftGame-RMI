@@ -58,7 +58,8 @@ void OneLeftClient::listen() {
     char buffer[65536]; // High to receive TEXT
     ssize_t status = 1;
 
-    while (status > 0) {
+    int oldServerFd = server_fd;
+    while (status > 0 && hasConnected) {
         // Command
         status = Utils::rbytes(server_fd, (unsigned char *) buffer, 1);
         if (status <= 0) break;
@@ -98,7 +99,9 @@ void OneLeftClient::listen() {
         }
     }
 
-    std::cout << "Connection Closed with Server { fd: " << server_fd << ", addr: " << server_addr << " }" << std::endl;
+    close(server_fd);
+    std::cout << "Connection Closed with Server { fd: " << oldServerFd << ", addr: " << server_addr << " }"
+              << std::endl;
 }
 
 int OneLeftClient::movePiece(int fromX, int fromY, int toX, int toY) {
