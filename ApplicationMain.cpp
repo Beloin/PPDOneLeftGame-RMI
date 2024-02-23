@@ -143,11 +143,11 @@ void ApplicationMain::OnStatusUpdate(StateMachine::State state) {
     std::cout << "State Updated: {" << state << "} " << getTimestamp() << std::endl;
     this->qtBoard->updateCells();
 
+    updateStatusLabel(state);
+
     if (state == StateMachine::CHOICE_TWO) {
         game->sendMove();
     }
-
-    updateStatusLabel(state);
 }
 
 void ApplicationMain::updateStatusLabel(const StateMachine::State &state) {
@@ -163,18 +163,18 @@ void ApplicationMain::updateStatusLabel(const StateMachine::State &state) {
             break;
         case StateMachine::WON:
             pStatusLabel->setText("Parabéns! Ganhastes");
-            game->disconnect();
+//            game->disconnect();
             break;
         case StateMachine::LOST:
             pStatusLabel->setText("Perdestes!");
-            game->disconnect();
+//            game->disconnect();
             break;
         case StateMachine::NOT_STARTED:
             pStatusLabel->setText("Fim do jogo.");
             break;
         case StateMachine::DRAW:
             pStatusLabel->setText("Empate!");
-            game->disconnect();
+//            game->disconnect();
             break;
         default:
             pStatusLabel->setText("Em espera");

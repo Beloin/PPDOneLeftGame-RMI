@@ -124,7 +124,7 @@ Board &StateMachine::GameStateMachine::board() {
 }
 
 void StateMachine::GameStateMachine::disconnect() {
-    if (currentState != NOT_STARTED && currentState != WON && currentState != LOST && currentState != DRAW) { flee(); }
+    flee();
     client.closeConnection();
 
     currentState = NOT_STARTED;
