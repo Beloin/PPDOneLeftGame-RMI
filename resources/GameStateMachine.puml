@@ -13,9 +13,9 @@ IDLE --> MY_TURN : Opponent has played
 
 MY_TURN -> CHOICE_ONE : Has selected the first piece
 
-CHOICE_ONE -> CHOICE_TWO : Has selected the second piece
+CHOICE_ONE --> CHOICE_TWO : Has selected the second piece
 
-CHOICE_TWO -> IDLE : Sent the game command to opponent
+CHOICE_TWO --> IDLE : Sent the game command to opponent
 
 
 IDLE --> WON : The opponent gave Up

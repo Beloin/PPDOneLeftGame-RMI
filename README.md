@@ -9,7 +9,6 @@ consisting of the base socket usage and the `GameStateMachine` the one which con
 game flow, make the calls to the underlying implementation of sockets. Finally, we have
 the `UI` code, which is what the Client see and plays.
 
-
 ## How to run:
 
 ### Linux
@@ -23,6 +22,7 @@ the `UI` code, which is what the Client see and plays.
 If it doesn't work with `install`, use `build`.
 
 - Debian Based:
+
 ```
 > sudo apt-get install build-essential qt5-default qt5-qmake cmake
 ```
@@ -57,14 +57,16 @@ to the server.
 
 ### To Start Game
 
+![StateMachine](./resources/ConnectionSetup.png)
+
 Server:
 
 - Read 255 Bytes for the game room name
 - Put client in a waiting list
-- After second client has requested the Game Room, send both of then an `accept command`
-  if the client starts, then is sent a 4 in the accept command byte, if not, is sent 1. If there's any
+- After second client has requested the same Game Room, send both of then an `accept command`
+  if the client begins the play, then is sent a 4 in the accept command byte, if not, is sent 1. If there's any
   problem with the connection, is sent a `NULL` byte, so the client knows there's some
-  problem.
+  error.
 
 Client:
 
