@@ -33,6 +33,10 @@ To build:
 > cd build && make
 ```
 
+If the `cmake` returns error of versions, you can easily downgrade for `VERSION 3.22`, or any that is compatible to
+your setup, in `CMakeLists.txt`.
+
+
 To run (inside "build" dir):
 ```
 > ./one_left server; # Starts the server
