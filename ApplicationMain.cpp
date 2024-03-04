@@ -57,7 +57,7 @@ ApplicationMain::ApplicationMain(QWidget *parent) : QMainWindow(parent) {
     auto fleeButton = new QPushButton{"Desistir", this};
     fleeButton->setLayoutDirection(Qt::RightToLeft);
     connect(fleeButton, &QPushButton::released, this, [this]() {
-        game->flee();
+        game->disconnect();
     });
 
     auto disconnectButton = new QPushButton{"Desconectar", this};

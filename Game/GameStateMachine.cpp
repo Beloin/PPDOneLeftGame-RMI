@@ -129,9 +129,6 @@ void StateMachine::GameStateMachine::disconnect() {
 
     currentState = NOT_STARTED;
     observer->OnStatusUpdate(currentState);
-
-    // TODO: This solves the disconnect problem?
-//    client = OneLeftClient{};
 }
 
 bool StateMachine::GameStateMachine::selectCell(Cell *cell) {
