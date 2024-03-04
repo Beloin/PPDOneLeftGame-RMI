@@ -27,6 +27,19 @@ If it doesn't work with `install`, use `build`.
 > sudo apt-get install build-essential qt5-default qt5-qmake cmake
 ```
 
+To build:
+```
+> cmake -S . -B build
+> cd build && make
+```
+
+To run (inside "build" dir):
+```
+> ./one_left server; # Starts the server
+> # On other terminal, or console
+> ./one_left
+```
+
 ### Windows
 
 Don't.
