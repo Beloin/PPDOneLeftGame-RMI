@@ -11,7 +11,7 @@
 
 void GameClient::operator()(const GameClient &other, bool isStartTurn) const {
     std::cout << "Started Gateway for Client " << *this << std::endl;
-    char buffer[65536]; // High to receive TEXT // TODO: Use dynamic memory
+    char buffer[65536]; // High to receive TEXT
     ssize_t status = 0;
 
     buffer[0] = isStartTurn ? 4 : 1;

@@ -1,18 +1,92 @@
-# One Left Game
+# Solitaire Game
 
+This is an implementation of the game Solitaire, named as "One Left Game" in this
+application. Is used QT5 and Linux's sockets to achieve communication.
+
+The code is separated in 3 sections, the `Server` code, which consists of the socket base usage
+and the client connection phase, working as a proxy to all games commands. Then we have the `Client`
+consisting of the base socket usage and the `GameStateMachine` the one which controls the
+game flow, make the calls to the underlying implementation of sockets. Finally, we have
+the `UI` code, which is what the Client see and plays.
+
+
+## How to run:
+
+### Linux
+
+- Arch Based:
+
+```
+> sudo pamac install qt5-base 
+```
+
+If it doesn't work with `install`, use `build`.
+
+- Debian Based:
+```
+> sudo apt-get install build-essential qt5-default
+```
+
+### Windows
+
+Don't.
+
+### Mac
+
+_Maybe_ the qt5 is POSIX, and _maybe_ it can be easily installed with some tweaks to the Mac.
+But Apple is not the developer problem, so you should stick to linux.
 
 ## Protocols
 
+To make the control via sockets, was created a protocol-like interface between clients.
+
+The overall structure of the protocol looks like this:
+
+```
+0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|    Command    |     DATA      |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|     DATA      |     DATA      |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|      ...      |      ...      |
+```
+
+But before any client can communicate with each other, they need to "ask for a game room"
+to the server.
+
 ### To Start Game
 
-Read 255 Bytes to have name.
+Server:
+
+- Read 255 Bytes for the game room name
+- Put client in a waiting list
+- After second client has requested the Game Room, send both of then an `accept command`
+  if the client starts, then is sent a 4 in the accept command byte, if not, is sent 1. If there's any
+  problem with the connection, is sent a `NULL` byte, so the client knows there's some
+  problem.
+
+Client:
+
+- Sends a game room request for the client with the desired name
+- Receives `accept command` as response and starts with the state as the accept byte
+  says.
+
+So, when everything is okay, a co-worker thread runs beside UI, so it can read the data from the
+server.
+
+The overall states that the client can have looks like this:
+
+![StateMachine](./resources/GameStateMachine.png)
+
+Below there's all the commands that can be sent by the client to the server.
 
 ### After Game Startup
+
 Read 1° Byte as Command Type:
 
-If CommandType 
+1: GAME
 
-1: CHOICE_ONE
 ```
 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -23,13 +97,15 @@ If CommandType
 ```
 
 2: CHAT
+
 ```
 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|              LEN              |   ...
+|              LEN              |   LEN * Bytes....
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 ```
-So the next LEN bytes will be plain ASCII text.
+
+So the next LEN bytes will be plain UNICODE text.
 
 4: OPTIONS
 
@@ -40,8 +116,8 @@ So the next LEN bytes will be plain ASCII text.
 +-+-+-+-+-+-+-+-+
 ```
 
-And OPTIONS as:
+For the option, we have implemented only one, "FLEE", but is open to more 255 options!
 
-1: 
+The class diagram looks something like this:
 
-
+![ServerAndClient](./resources/ServerAndClientClassDiagram.png)

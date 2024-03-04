@@ -54,7 +54,6 @@ int OneLeftClient::requestGame(const std::string &game, const std::string &host,
 void OneLeftClient::listen() {
     if (!_isConnected) return;
 
-    // TODO: Use dynamic memory
     char buffer[65536]; // High to receive TEXT
     ssize_t status = 1;
 

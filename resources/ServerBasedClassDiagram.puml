@@ -1,4 +1,4 @@
-@startuml ClassWork
+@startuml ServerAndClientClassDiagram
 'https://plantuml.com/class-diagram
 
 class Game {
@@ -29,9 +29,6 @@ Game *-- "1" Board
 
 class RawCommand {
     + Command command
-    - raw_data
-
-    string GetText() = 0
 }
 
 class GameCommand {

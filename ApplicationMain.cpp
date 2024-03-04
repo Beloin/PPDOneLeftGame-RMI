@@ -65,7 +65,7 @@ ApplicationMain::ApplicationMain(QWidget *parent) : QMainWindow(parent) {
     disconnectButton->setGeometry(0, 30, currentGeometry.width(), currentGeometry.height());
     fleeButton->setLayoutDirection(Qt::RightToLeft);
     connect(disconnectButton, &QPushButton::released, this, [this]() {
-        game->disconnect(); // TODO: Disconnection is weird acting
+        game->disconnect();
     });
 
     pStatusLabel = new QLabel("Se conecte ao servidor", qtBoard);
@@ -73,9 +73,7 @@ ApplicationMain::ApplicationMain(QWidget *parent) : QMainWindow(parent) {
     pStatusLabel->setAlignment(Qt::AlignCenter);
     pStatusLabel->setGeometry(150, 10, 300, 30);
 
-    // TODO: What is missin?
-    //  1. Game end, check for each piece if can be moved, if not, the current turn user has lost
-    //  2. Add game name choice
+    // TODO: What is missing?
     //  3. Game movement validation
     //  4. Add remove game when it has finished
     //  5. Add when game is finished call again

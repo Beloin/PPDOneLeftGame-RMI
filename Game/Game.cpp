@@ -24,13 +24,10 @@ void Game::setGamer(GameClient gameClient) {
 }
 
 void Game::start() {
-    // TODO: How to know when game endeded
-    // TODO: Maybe we should join threads to wait for end game
+    // TODO: We should join threads to wait for end game.
     std::thread gamer01Thread{gamer01, gamer02, true};
     std::thread gamer02Thread{gamer02, gamer01, false};
 
-    // TODO: We will attach this to other guy so when connection is closed, the game is closed too and the resources are freed
-    //  But this will be the last thing to do
     gamer01Thread.detach();
     gamer02Thread.detach();
 }

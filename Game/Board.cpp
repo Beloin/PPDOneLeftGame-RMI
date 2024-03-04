@@ -53,17 +53,7 @@ void Board::reset() {
     setup();
 }
 
-// 0 0 X X X 0 0
-// 0 0 X X X 0 0
-// X X X X X X X
-// X X X 0 X X X
-// X X X X X X X
-// 0 0 X X X 0 0
-// 0 0 X X X 0 0
 void Board::move(int fromX, int fromY, int toX, int toY) {
-    // TODO: Add game validation here
-
-    // Example: (5, 3) -> (3, 3) : 5 - 3 = 2, 3 - 3 = 0
     auto xDiff = fromX - toX;
     auto yDiff = fromY - toY;
 

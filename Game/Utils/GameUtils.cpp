@@ -28,10 +28,7 @@ bool isLocationValid(int i, int j) {
 // X X X X X X X
 // 0 0 X X X 0 0
 // 0 0 X X X 0 0
-// Y X←?
-// TODO: WTF? Why X is coming through RIGHT->LEFT
-// TODO: WTF? Why Y is coming through BOOTOM->TOP
-//  Fix this!
+// Y↑ X←
 bool pieceHasMovement(Board &board, int i, int j) {
     Cell &cell = board.at(i, j);
     if (!cell.isValid()) return false;

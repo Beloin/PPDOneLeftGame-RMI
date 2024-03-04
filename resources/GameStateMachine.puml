@@ -3,29 +3,25 @@
 
 scale 350 width
 
-[*] -> Idle
+[*] -> NOT_STARTED
 
-Idle --> GameState : Choose First position
+NOT_STARTED --> IDLE : Received Status != 4 (Not start)
 
-state GameState {
-    [*] --> GameCommand : Chose the second Position
+NOT_STARTED -> MY_TURN : Received Status == 4
 
-    GameCommand --> Idle
-}
+IDLE --> MY_TURN : Opponent has played
 
-Idle --> ChatState : Ask for Message
-state ChatState {
-    [*] -> MessageCommand : Write Message
+MY_TURN -> CHOICE_ONE : Has selected the first piece
 
-    MessageCommand --> Idle
-}
+CHOICE_ONE -> CHOICE_TWO : Has selected the second piece
 
-Idle --> OptionState : Ask for Option
-state OptionState {
-    [*] -> OptionCommand : Choose Option
+CHOICE_TWO -> IDLE : Sent the game command to opponent
 
-    OptionCommand --> Idle
-}
 
+IDLE --> WON : The opponent gave Up
+IDLE --> LOST : Has no more moves
+
+MY_TURN --> WON : The opponent has no more moves
+MY_TURN --> LOST : Gave Up
 
 @enduml
