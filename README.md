@@ -24,7 +24,7 @@ If it doesn't work with `install`, use `build`.
 - Debian Based:
 
 ```
-> sudo apt-get install build-essential qt5-default qt5-qmake cmake
+> sudo apt-get install build-essential qtbase5-dev qt5-qmake cmake
 ```
 
 To build:
