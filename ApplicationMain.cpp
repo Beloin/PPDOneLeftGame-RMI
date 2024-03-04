@@ -74,10 +74,9 @@ ApplicationMain::ApplicationMain(QWidget *parent) : QMainWindow(parent) {
     pStatusLabel->setGeometry(150, 10, 300, 30);
 
     // TODO: What is missing?
-    //  3. Game movement validation
-    //  4. Add remove game when it has finished
-    //  5. Add when game is finished call again
-    //  6. Better UI
+    //  3. [Client] Game movement validation
+    //  4. [Server] Add remove game when it has finished
+    //  6. [Client] Better UI
 }
 
 void ApplicationMain::handle() {
@@ -161,18 +160,18 @@ void ApplicationMain::updateStatusLabel(const StateMachine::State &state) {
             break;
         case StateMachine::WON:
             pStatusLabel->setText("Parabéns! Ganhastes");
-//            game->disconnect();
+            this->pChat->clearAll();
             break;
         case StateMachine::LOST:
             pStatusLabel->setText("Perdestes!");
-//            game->disconnect();
+            this->pChat->clearAll();
             break;
         case StateMachine::NOT_STARTED:
             pStatusLabel->setText("Fim do jogo.");
             break;
         case StateMachine::DRAW:
             pStatusLabel->setText("Empate!");
-//            game->disconnect();
+            this->pChat->clearAll();
             break;
         default:
             pStatusLabel->setText("Em espera");

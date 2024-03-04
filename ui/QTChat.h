@@ -24,6 +24,8 @@ public:
     QTChat();
 
     void addOpponentMessage(const std::string &msg);
+
+    void clearAll();
 };
 
 

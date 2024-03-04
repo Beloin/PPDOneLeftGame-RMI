@@ -46,7 +46,6 @@ void QTChat::addOpponentMessage(const std::string &msg) {
 }
 
 void QTChat::sendMessage() {
-    // TODO: Send only when connected
     const QString &string = lineEdit->text();
 
     if (string.isNull() || string.isEmpty()) return;
@@ -58,4 +57,13 @@ void QTChat::sendMessage() {
     machine->sendChat(basicString);
 
     lineEdit->clear();
+}
+
+void QTChat::clearAll() {
+    listView->clear();
+
+    auto *itemO1 = new QListWidgetItem("Escreva algo para seu oponente");
+    itemO1->setBackground(Qt::lightGray);
+    itemO1->setTextAlignment(Qt::AlignCenter);
+    listView->addItem(itemO1);
 }

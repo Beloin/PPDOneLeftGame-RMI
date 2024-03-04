@@ -110,6 +110,7 @@ void StateMachine::GameStateMachine::optionCallable(const RawCommand &command) {
     if (option->option == FLEE) {
         currentState = WON;
         observer->OnStatusUpdate(currentState);
+        silentDisconnect();
     }
 
     observer->OnOption(option->option);
@@ -124,11 +125,15 @@ Board &StateMachine::GameStateMachine::board() {
 }
 
 void StateMachine::GameStateMachine::disconnect() {
-    flee();
-    client.closeConnection();
+    silentDisconnect();
 
     currentState = NOT_STARTED;
     observer->OnStatusUpdate(currentState);
+}
+
+void StateMachine::GameStateMachine::silentDisconnect() {
+    flee();
+    client.closeConnection();
 }
 
 bool StateMachine::GameStateMachine::selectCell(Cell *cell) {

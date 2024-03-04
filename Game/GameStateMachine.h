@@ -93,6 +93,8 @@ namespace StateMachine {
         bool removeCell(Cell *cell);
 
         State getState();
+
+        void silentDisconnect();
     };
 }
 
