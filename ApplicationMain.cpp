@@ -18,7 +18,6 @@
 #include <sstream>
 #include <QFormLayout>
 #include <QDialogButtonBox>
-#include <format>
 #include <iomanip>
 
 static ApplicationMain *onCall = nullptr;
