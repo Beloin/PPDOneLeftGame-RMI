@@ -44,3 +44,10 @@ build/**
 *.exe
 *.out
 *.app
+
+.cache/**
+compile_commands.json
+neovim.json
+out/**
+
+build/**

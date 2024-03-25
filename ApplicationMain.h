@@ -7,7 +7,6 @@
 
 
 #include <QMainWindow>
-#include "OneLeftClient.h"
 #include "ui/QTBoard.h"
 #include "GameStateMachine.h"
 #include "ui/QTChat.h"

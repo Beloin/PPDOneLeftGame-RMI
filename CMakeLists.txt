@@ -23,4 +23,5 @@ target_link_libraries(one_left
         Qt5::Gui
         Qt5::Widgets
         ui game_lib network_lib
+        rpc
 )

@@ -1,9 +1,11 @@
 # Solitaire Game
 
 This is an implementation of the game Solitaire, named as "One Left Game" in this
-application. Is used QT5 and Linux's sockets to achieve communication.
+application. Is used QT5 and RPC calls to achieve communication.
 
-The code is separated in 3 sections, the `Server` code, which consists of the socket base usage
+To use RPC call, we needed the Packeage `rpclib` in https://github.com/rpclib/rpclib.
+
+The code is separated in 3 sections, the `Server` code, which consists of the socket Vbase usage
 and the client connection phase, working as a proxy to all games commands. Then we have the `Client`
 consisting of the base socket usage and the `GameStateMachine` the one which controls the
 game flow, make the calls to the underlying implementation of sockets. Finally, we have
@@ -15,9 +17,8 @@ the `UI` code, which is what the Client see and plays.
 
 - Arch Based:
 
-```
-> sudo pamac install qt5-base 
-```
+> sudo pamac install qt5-base   
+> sudo pamac build rpclib
 
 If it doesn't work with `install`, use `build`.
 
@@ -27,8 +28,7 @@ If it doesn't work with `install`, use `build`.
 > sudo apt-get install build-essential qtbase5-dev qt5-qmake cmake
 ```
 
-To build:
-```
+```bash
 > cmake -S . -B build
 > cd build && make
 ```
@@ -38,7 +38,7 @@ your setup, in `CMakeLists.txt`.
 
 
 To run (inside "build" dir):
-```
+```bash
 > ./one_left server; # Starts the server
 > # On other terminal, or console
 > ./one_left

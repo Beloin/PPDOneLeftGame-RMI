@@ -5,7 +5,8 @@
 #ifndef TWAMP_SERVER_H
 #define TWAMP_SERVER_H
 
-#include "list"
+#include <rpc/server.h>
+#include <string>
 
 
 namespace Network {
@@ -13,6 +14,7 @@ namespace Network {
     class Server {
 
     public:
+        
         explicit Server();
 
         int serve(const std::string &port);
@@ -30,6 +32,8 @@ namespace Network {
         bool server_on;
         int serverfd{};
         bool isClosed;
+
+        rpc::server srv;
 
     };
 

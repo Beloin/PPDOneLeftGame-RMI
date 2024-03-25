@@ -1,0 +1,14 @@
+@startuml Gameplay
+'https://plantuml.com/sequence-diagram
+
+title Gameplay
+
+
+Client0 --> Server : Sends a command that\nshould be proxy'ed to Client1
+
+Server --> Client1 : Sends Proxy'ed command
+
+Client1 --> Server : Returns Command result
+Server --> Client0 : Proxy Command result
+
+@enduml

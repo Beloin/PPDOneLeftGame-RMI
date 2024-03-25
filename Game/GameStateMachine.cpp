@@ -65,6 +65,7 @@ StateMachine::GameStateMachine::GameStateMachine() {
     client.bindCallable(CommandType::CHAT, [](const RawCommand &command) {
         self->chatCallable(command);
     });
+    // TODO: Maybe in this callable we can add call from RMI calls
     client.bindCallable(CommandType::OPTION, [](const RawCommand &command) {
         self->optionCallable(command);
     });

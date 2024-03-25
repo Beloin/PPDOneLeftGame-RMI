@@ -1,0 +1,16 @@
+@startuml Connection Setup
+'https://plantuml.com/sequence-diagram
+
+title "Connection Setup"
+
+autonumber
+
+
+Client0 --> Server : Connect and Asks for Game
+note right : Acknowledge and opens\na 'GameRequest' for this Client
+Client1 -->  Server: Connect and Asks for The Same Game
+
+Server --> Client1 : Sends Start Command
+Server --> Client0 : Sends Start Command
+
+@enduml

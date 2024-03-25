@@ -17,12 +17,12 @@ void OneLeftServer::handle_socket(int client_fd, std::string client_addr) {
         return;
     }
 
-    const std::basic_string<char> &gameName = std::string(buffer);
+    const std::basic_string<char> &gameNameG = std::string(buffer);
 
     const std::vector<Game>::iterator &iterator = std::find_if(
             games.begin(), games.end(),
-            [&gameName](const Game &game) {
-                return game.name == gameName;
+            [&gameNameG](const Game &game) {
+                return game.name == gameNameG;
             }
     );
 
@@ -44,7 +44,7 @@ void OneLeftServer::handle_socket(int client_fd, std::string client_addr) {
     }
 
     GameClient g{currentId++, client_fd, client_addr};
-    Game newGame{gameName};
+    Game newGame{gameNameG};
     newGame.setGamer(g);
     games.push_back(std::move(newGame));
 }
