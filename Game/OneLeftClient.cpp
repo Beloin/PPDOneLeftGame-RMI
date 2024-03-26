@@ -4,10 +4,10 @@
 
 #include "OneLeftClient.h"
 #include "Messages/Command.h"
+#include "internal_rpc/types.h"
 #include "socket_utils.h"
 #include <csignal>
 #include <iostream>
-#include "internal_rpc/types.h"
 
 Board &OneLeftClient::board() { return _board; }
 
@@ -37,7 +37,7 @@ int OneLeftClient::requestGame(const std::string &game, const std::string &host,
   return 0;
 }
 
-void OneLeftClient::listen() { 
+void OneLeftClient::listen() {
   if (!_isConnected)
     return;
 
@@ -46,7 +46,8 @@ void OneLeftClient::listen() {
 
   int oldServerFd = server_fd;
   while (status > 0 && hasConnected) {
-    Result res = rpcClient->call("listen").as<Result>(); // TODO: create a way to retrieve data
+    Result res = rpcClient->call("listen")
+                     .as<Result>(); // TODO: create a way to retrieve data
 
     // Command
     status = Utils::rbytes(server_fd, (unsigned char *)buffer, 1);
