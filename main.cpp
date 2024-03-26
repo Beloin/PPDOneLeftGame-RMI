@@ -23,3 +23,8 @@ int main(int argc, char *argv[]) {
 
   return QApplication::exec();
 }
+
+
+// TODO: Missing
+// Implement binds in server
+// Implement calls in client
