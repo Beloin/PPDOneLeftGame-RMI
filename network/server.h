@@ -8,37 +8,33 @@
 #include <rpc/server.h>
 #include <string>
 
-
 namespace Network {
 
-    class Server {
+class Server {
 
-    public:
-        
-        explicit Server();
+public:
+  explicit Server();
 
-        int serve(const std::string &port);
+  int serve(const std::string &port);
 
-        ~Server();
+  ~Server();
 
-        [[nodiscard]] bool IsRunning() const;
+  [[nodiscard]] bool IsRunning() const;
 
-        virtual void handle_socket(int client_fd, std::string client_addr) = 0;
+  virtual void handle_socket(int client_fd, std::string client_addr) = 0;
+  virtual void bind(rpc::server &srv) = 0;
 
-        void dispose();
+  void dispose();
 
-    protected:
-        bool should_run;
-        bool server_on;
-        int serverfd{};
-        bool isClosed;
+protected:
+  bool should_run;
+  bool server_on;
+  int serverfd{};
+  bool isClosed;
 
-        rpc::server srv;
+  rpc::server srv;
+};
 
-    };
+} // namespace Network
 
-
-}
-
-
-#endif //TWAMP_SERVER_H
+#endif // TWAMP_SERVER_H

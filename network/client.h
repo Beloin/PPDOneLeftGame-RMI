@@ -6,29 +6,32 @@
 #define TWAMP_CLIENT_H
 
 #include <string>
+#include <rpc/client.h>
 
 namespace Network {
-    class Client {
 
-    protected:
-        bool hasConnected = false;
-        int server_fd{};
+class Client {
 
-        std::string server_addr;
+protected:
+  bool hasConnected = false;
+  int server_fd{};
 
-    private:
-        int ConnectToServer(std::string const &host, std::string const &port);
+  std::string server_addr;
+  rpc::client *rpcClient;
+ 
+private:
+  int ConnectToServer(std::string const &host, std::string const &port);
 
-    public:
-        int ConnectTo(std::string const &host, std::string const &port);
+public:
+  int ConnectTo(std::string const &host, std::string const &port);
 
-        [[nodiscard]] bool IsConnected() const;
+  [[nodiscard]] bool IsConnected() const;
 
-        virtual ~Client();
+  virtual ~Client();
 
-        void disconnect();
-    };
+  void disconnect();
+};
 
-}
+} // namespace Network
 
-#endif //TWAMP_CLIENT_H
+#endif // TWAMP_CLIENT_H

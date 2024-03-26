@@ -25,3 +25,5 @@ target_link_libraries(one_left
         ui game_lib network_lib
         rpc
 )
+
+

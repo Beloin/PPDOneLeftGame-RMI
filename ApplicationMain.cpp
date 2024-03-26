@@ -72,7 +72,6 @@ ApplicationMain::ApplicationMain(QWidget *parent) : QMainWindow(parent) {
     pStatusLabel->setGeometry(150, 10, 300, 30);
 
     // TODO: What is missing?
-    //  3. [Client] Game movement validation
     //  4. [Server] Add remove game when it has finished
     //  6. [Client] Better UI
 }
