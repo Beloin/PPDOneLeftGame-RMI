@@ -16,6 +16,8 @@ private:
   std::vector<Game> games{};
   int currentId{0};
 
+  int handleGameRequest(std::string game);
+
 public:
   void handle_socket(int client_fd, std::string client_addr) override;
   void bind(rpc::server &srv) override;

@@ -23,6 +23,7 @@ int Server::serve(const std::string &port) {
   server_on = true;
 
   // Here add bindings to calls
+  this->bind(srv);
   srv.run();
 
   // TODO: Now we need a new way to use handle_socket

@@ -16,8 +16,8 @@ public:
 
     std::string name; // Act as ID
 
-    GameClient gamer01{-1, -1};
-    GameClient gamer02{-1, -1};
+    GameClient gamer01{-1};
+    GameClient gamer02{-1};
 
     [[nodiscard]] bool isClosed() const;
 
@@ -28,7 +28,6 @@ public:
 private:
     bool hasGamer01{false};
     bool hasGamer02{false};
-
 
 };
 

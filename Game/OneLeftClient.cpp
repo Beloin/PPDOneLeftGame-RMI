@@ -46,8 +46,7 @@ void OneLeftClient::listen() {
 
   int oldServerFd = server_fd;
   while (status > 0 && hasConnected) {
-    Result res = rpcClient->call("listen")
-                     .as<Result>();
+    Result res = rpcClient->call("listen").as<Result>();
     // TODO: Here we will use result to call those callables!
 
     // Command

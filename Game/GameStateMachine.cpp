@@ -73,7 +73,7 @@ StateMachine::GameStateMachine::GameStateMachine() {
 void StateMachine::GameStateMachine::gameCallable(const RawCommand &command) {
   auto game = (GameCommand *)&command;
 
-  int fromX = game->fromX;asdasd
+  int fromX = game->fromX;
   int fromY = game->fromY;
   int toX = game->toX;
   int toY = game->toY;

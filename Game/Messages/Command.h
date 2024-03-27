@@ -7,53 +7,45 @@
 
 #include <string>
 
-enum CommandType {
-    GAME = 1,
-    CHAT = 2,
-    OPTION = 4
-};
+enum CommandType { GAME = 1, CHAT = 2, OPTION = 4 };
 
-enum Option {
-    FLEE = 1,
-    EXPLODE = 2
-};
+enum Option { FLEE = 1, EXPLODE = 2 };
 
 class RawCommand {
 public:
-    CommandType commandType;
+  CommandType commandType;
 
-    explicit RawCommand(CommandType commandType) : commandType(commandType) {};
+  explicit RawCommand(CommandType commandType) : commandType(commandType){};
 };
 
 class GameCommand : public RawCommand {
 public:
-    int fromX;
-    int fromY;
-    int toX;
-    int toY;
+  int fromX;
+  int fromY;
+  int toX;
+  int toY;
 
-    GameCommand(int fromX, int fromY, int toX, int toY);
+  GameCommand(int fromX, int fromY, int toX, int toY);
 
-    GameCommand &operator=(GameCommand &&other) noexcept;
-
+  GameCommand &operator=(GameCommand &&other) noexcept;
 };
 
 class ChatCommand : public RawCommand {
 public:
-    explicit ChatCommand(std::string text);
+  explicit ChatCommand(std::string text);
 
-    std::string text;
+  std::string text;
 
-    ChatCommand &operator=(ChatCommand &&other) noexcept;
+  ChatCommand &operator=(ChatCommand &&other) noexcept;
 };
 
 class OptionCommand : public RawCommand {
 public:
-    Option option;
+  Option option;
 
-    explicit OptionCommand(Option option);
+  explicit OptionCommand(Option option);
 
-    OptionCommand &operator=(OptionCommand &&other) noexcept;
+  OptionCommand &operator=(OptionCommand &&other) noexcept;
 };
 
-#endif //ONE_LEFT_COMMAND_H
+#endif // ONE_LEFT_COMMAND_H
